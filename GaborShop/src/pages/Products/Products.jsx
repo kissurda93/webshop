@@ -11,22 +11,48 @@ import Paginater from "../../components/paginater/Paginater";
 import Categories from "../../components/categories/Categories";
 
 export default function Products() {
-  const { status, productsList } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const { status, productsList } = useSelector((state) => state.products);
   const [link, setLink] = useState(PRODUCTS_URL);
+  const [searchData, setSearchData] = useState({});
+  const [searchCounter, setSearchCounter] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchProducts(link));
-  }, [link]);
+    dispatch(fetchProducts({ link, searchData }));
+  }, [link, searchCounter]);
 
   return (
     <>
       <section className="filters">
-        <form className="search-form">
+        <form
+          className="search-form"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <div className="relative-container">
-            <input type="text" placeholder="Search Product..." name="search" />
-            <button type="submit">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <input
+              type="text"
+              placeholder="Search for Product..."
+              name="search"
+              onChange={(event) =>
+                setSearchData({
+                  ...searchData,
+                  [event.target.name]: event.target.value,
+                })
+              }
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              onClick={() => {
+                setLink(`${import.meta.env.VITE_API_URL}/search-products`);
+                setSearchCounter(searchCounter + 1);
+              }}
+            >
+              {status === "loading" ? (
+                "..."
+              ) : (
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              )}
             </button>
           </div>
         </form>

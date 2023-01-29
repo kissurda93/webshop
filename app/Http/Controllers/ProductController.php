@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\SearchProductRequest;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -15,7 +17,15 @@ class ProductController extends Controller
      */
     public function index()
     {   
-        $data = Product::paginate(6);
+        $data = Product::paginate(9);
+        return response(compact('data'));
+    }
+
+    public function search(Request $request) {
+        $data = Product::where('title', 'LIKE', '%'.$request['search'].'%')
+        ->orWhere('description', 'LIKE', '%'.$request['search'].'%')
+        ->paginate(9);
+        
         return response(compact('data'));
     }
 
