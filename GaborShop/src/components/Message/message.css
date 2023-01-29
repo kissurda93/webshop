@@ -1,0 +1,22 @@
+.message-container {
+  display: flex;
+  justify-content: center;
+}
+
+.message {
+  font-size: 1.4rem;
+  padding: 1rem;
+  margin: 0 auto 2rem auto;
+  border-radius: 5px;
+  color: greenyellow;
+  background-color: var(--dark-purple);
+  max-width: 600px;
+}
+.message-failed {
+  color: red;
+}
+
+/* ShowInputError component */
+.errormsg {
+  color: red;
+}

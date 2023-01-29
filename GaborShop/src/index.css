@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap");
+
+:root {
+  --dark-purple: rgb(66, 72, 116);
+  --green: rgb(107, 212, 37);
+  --light-purple: rgb(220, 214, 247);
+  --light-green: rgb(214, 229, 227);
+  --light-grey: rgb(202, 207, 214);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+* > li {
+  list-style: none;
+}
+
+* > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* > button {
+  cursor: pointer;
+}
+
+body {
+  background-color: var(--light-grey);
+}
+
+main {
+  margin-top: 5rem;
+}
+
+button:hover,
+button[type="submit"]:hover {
+  background-color: var(--green);
+  color: var(--dark-purple);
+}
+
+input {
+  font-size: 1.3rem;
+  border-radius: 4px;
+  padding: 0.2rem;
+  width: 450px;
+  margin-left: 0.5rem;
+  border: none;
+}
+
+input:focus {
+  outline: 3px solid var(--green);
+}

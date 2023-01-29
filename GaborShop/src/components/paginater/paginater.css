@@ -1,0 +1,21 @@
+.paginater-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem 0;
+}
+
+.paginater-container > button {
+  font-size: 1.4rem;
+  padding: 0.8rem 1rem;
+  margin-right: 0.5rem;
+  border: none;
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.paginater-container > button:hover,
+.paginater-container .page-active {
+  background-color: var(--green);
+  color: var(--dark-purple);
+}
