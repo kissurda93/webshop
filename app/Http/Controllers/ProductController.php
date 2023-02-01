@@ -15,8 +15,13 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Category $category)
     {   
+        if(isset($category->id)) {
+            $data = $category->products()->paginate(9);
+            return response(compact('data'));
+        }
+        
         $data = Product::paginate(9);
         return response(compact('data'));
     }

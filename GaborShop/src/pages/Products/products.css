@@ -31,7 +31,7 @@
 
 .product-container {
   margin: 1rem;
-  max-width: 450px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

@@ -56,7 +56,7 @@ export default function Products() {
             </button>
           </div>
         </form>
-        <Categories />
+        <Categories setLink={setLink} />
       </section>
       <section className="products">
         {status === "loading" ? (
