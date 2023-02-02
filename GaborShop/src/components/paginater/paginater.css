@@ -9,13 +9,13 @@
   padding: 0.8rem 1rem;
   margin-right: 0.5rem;
   border: none;
-  background-color: var(--light-green);
-  color: var(--dark-purple);
+  border-radius: 4px;
+  background-color: var(--dark-purple);
+  color: var(--light-green);
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .paginater-container > button:hover,
 .paginater-container .page-active {
-  background-color: var(--green);
-  color: var(--dark-purple);
+  color: var(--green);
 }

@@ -37,17 +37,15 @@
   justify-content: space-evenly;
   background-color: var(--light-green);
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-.img-container {
-  max-height: 400px;
-  overflow: hidden;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 .img-container > img {
-  max-width: 100%;
-  height: auto;
+  width: 400px;
+  height: 400px;
   object-fit: contain;
+  border-radius: 4px;
 }
 
 .product-info-container {

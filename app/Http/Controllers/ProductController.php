@@ -63,7 +63,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        $images = $product->images()->get();
+        
+        return response(compact('product', 'images'));
     }
 
     /**

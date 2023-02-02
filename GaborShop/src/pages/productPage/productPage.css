@@ -1,0 +1,24 @@
+.single-product-container {
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  background-color: var(--light-green);
+  border-radius: 4px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.product-description {
+  font-size: 1.5rem;
+  padding: 2rem;
+}
+
+.product-description > p {
+  position: relative;
+  padding-bottom: 1.5rem;
+  color: var(--dark-purple);
+}
+
+.product-info-label {
+  font-size: 1rem;
+  position: absolute;
+  top: -1rem;
+}

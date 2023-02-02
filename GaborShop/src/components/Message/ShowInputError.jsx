@@ -1,8 +1,10 @@
+import "./message.css";
+
 export default function ShowInputError({ status, inputName }) {
   return (
     <>
       {status.errors[inputName] !== "undefined" && (
-        <div style={{ color: "red" }}>{status.errors[inputName]}</div>
+        <div className="input-error">{status.errors[inputName]}</div>
       )}
     </>
   );

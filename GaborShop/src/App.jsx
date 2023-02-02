@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import UserLayout from "./layouts/UserLayout/UserLayout";
 import NotFound from "./pages/NotFound/NotFound";
 import Products from "./pages/Products/Products";
+import ProductPage from "./pages/productPage/ProductPage";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
@@ -13,6 +14,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<UserLayout />}>
         <Route path="products" element={<Products />} />
+        <Route path="product/:id" element={<ProductPage />} />
         <Route path="signin" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="profile" element={<Profile />} />

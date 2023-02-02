@@ -11,12 +11,13 @@
   color: greenyellow;
   background-color: var(--dark-purple);
   max-width: 600px;
+  text-align: center;
 }
 .message-failed {
   color: red;
 }
 
 /* ShowInputError component */
-.errormsg {
+.input-error {
   color: red;
 }

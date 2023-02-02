@@ -9,9 +9,12 @@ import { faStar, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { PRODUCTS_URL } from "./productsAsync";
 import Paginater from "../../components/paginater/Paginater";
 import Categories from "../../components/categories/Categories";
+import { useNavigate } from "react-router-dom";
+import Price from "../../components/price/Price";
 
 export default function Products() {
   const dispatch = useDispatch();
+  const navTo = useNavigate();
   const { status, productsList } = useSelector((state) => state.products);
   const [link, setLink] = useState(PRODUCTS_URL);
   const [searchData, setSearchData] = useState({});
@@ -20,6 +23,10 @@ export default function Products() {
   useEffect(() => {
     dispatch(fetchProducts({ link, searchData }));
   }, [link, searchCounter]);
+
+  const toProductPage = (id) => {
+    return navTo(`/product/${id}`);
+  };
 
   return (
     <>
@@ -64,7 +71,11 @@ export default function Products() {
         ) : productsList ? (
           productsList.map((product) => {
             return (
-              <div className="product-container" key={product.id}>
+              <div
+                className="product-container"
+                key={product.id}
+                onClick={() => toProductPage(product.id)}
+              >
                 <div className="img-container">
                   <img
                     src={product.thumbnail}
@@ -76,7 +87,11 @@ export default function Products() {
                 </div>
                 <div className="product-info-container">
                   <p>{product.title}</p>
-                  <p>$ {product.price}</p>
+                  <Price
+                    price={product.price}
+                    discountPercentage={product.discountPercentage}
+                    inList={true}
+                  />
                   <p>
                     <FontAwesomeIcon icon={faStar} color="gold" />{" "}
                     {product.rating}

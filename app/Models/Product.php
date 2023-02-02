@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -22,5 +23,9 @@ class Product extends Model
 
     public function categories() {
         return $this->belongsToMany(Category::class, 'category_product', 'products_id', 'categories_id');
+    }
+
+    public function images() {
+        return $this->hasMany(ProductImage::class);
     }
 }

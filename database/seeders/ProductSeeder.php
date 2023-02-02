@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -35,6 +36,13 @@ class ProductSeeder extends Seeder
             ]);
 
             $category->products()->attach($productInstance);
+
+            foreach($product->images as $image) {
+                $productInstance->images()->create([
+                    'url' => $image,
+                ]);
+
+            }
         }
 
     }

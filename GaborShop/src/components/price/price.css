@@ -1,0 +1,23 @@
+.price-container {
+  display: flex;
+}
+
+.price-container-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-container > p {
+  margin-left: 1rem;
+}
+
+.old-price {
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.new-price {
+  color: rgb(158, 2, 2);
+  font-size: 1.7rem;
+  font-weight: 500;
+}
