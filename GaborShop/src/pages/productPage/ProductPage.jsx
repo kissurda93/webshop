@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "../../components/spinners/Spinner";
 import ImageSlider from "../../components/imageSlider/ImageSlider";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
 import Price from "../../components/price/Price";
+import Rating from "../../components/rating/Rating";
 
 export default function ProductPage() {
   let { id } = useParams();
@@ -28,6 +27,10 @@ export default function ProductPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleToCartSubmit = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       {loading ? (
@@ -48,19 +51,30 @@ export default function ProductPage() {
               <span className="product-info-label">Brand:</span>
               {product.brand}
             </p>
-            <Price
-              price={product.price}
-              discountPercentage={product.discountPercentage}
-            />
             <p>
-              <FontAwesomeIcon icon={faStar} color={"gold"} />
-              {product.rating}
+              <span className="product-info-label">Stock:</span>
+              {product.stock}
             </p>
-            <p>{product.stock}</p>
+            <div className="price-rating-flex">
+              <Price
+                price={product.price}
+                discountPercentage={product.discountPercentage}
+              />
+              <Rating rating={product.rating} />
+            </div>
           </div>
-          <div className="button-container">
-            <button>Add to Cart</button>
-          </div>
+          <form onSubmit={handleToCartSubmit} className="add-to-cart-form">
+            <label>
+              Quantity:
+              <input
+                name="quantity"
+                min={1}
+                max={product.stock}
+                type="number"
+              />
+            </label>
+            <button type="submit">Add to Cart</button>
+          </form>
         </section>
       )}
     </>

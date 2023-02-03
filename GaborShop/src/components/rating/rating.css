@@ -1,0 +1,6 @@
+.rating-container {
+  display: flex;
+  margin-right: 1rem;
+  color: var(--dark-purple);
+  font-size: 1.4rem;
+}

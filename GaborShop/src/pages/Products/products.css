@@ -49,9 +49,10 @@
 }
 
 .product-info-container {
-  font-size: 1.4rem;
   padding: 1rem;
 }
 .product-info-container > p {
   padding-bottom: 0.2rem;
+  font-size: 1.6rem;
+  color: var(--dark-purple);
 }

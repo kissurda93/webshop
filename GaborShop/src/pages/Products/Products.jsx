@@ -2,15 +2,16 @@ import "./products.css";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "./productsAsync";
-import Spinner from "../../components/spinners/Spinner";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { PRODUCTS_URL } from "./productsAsync";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../../components/spinners/Spinner";
 import Paginater from "../../components/paginater/Paginater";
 import Categories from "../../components/categories/Categories";
-import { useNavigate } from "react-router-dom";
 import Price from "../../components/price/Price";
+import Rating from "../../components/rating/Rating";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -28,13 +29,16 @@ export default function Products() {
     return navTo(`/product/${id}`);
   };
 
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    setLink(`${import.meta.env.VITE_API_URL}/search-products`);
+    setSearchCounter(searchCounter + 1);
+  };
+
   return (
     <>
       <section className="filters">
-        <form
-          className="search-form"
-          onSubmit={(event) => event.preventDefault()}
-        >
+        <form className="search-form" onSubmit={handleSearchSubmit}>
           <div className="relative-container">
             <input
               type="text"
@@ -47,14 +51,7 @@ export default function Products() {
                 })
               }
             />
-            <button
-              type="submit"
-              disabled={status === "loading"}
-              onClick={() => {
-                setLink(`${import.meta.env.VITE_API_URL}/search-products`);
-                setSearchCounter(searchCounter + 1);
-              }}
-            >
+            <button type="submit" disabled={status === "loading"}>
               {status === "loading" ? (
                 "..."
               ) : (
@@ -87,15 +84,14 @@ export default function Products() {
                 </div>
                 <div className="product-info-container">
                   <p>{product.title}</p>
-                  <Price
-                    price={product.price}
-                    discountPercentage={product.discountPercentage}
-                    inList={true}
-                  />
-                  <p>
-                    <FontAwesomeIcon icon={faStar} color="gold" />{" "}
-                    {product.rating}
-                  </p>
+                  <div className="price-rating-flex">
+                    <Price
+                      price={product.price}
+                      discountPercentage={product.discountPercentage}
+                      inList={true}
+                    />
+                    <Rating rating={product.rating} />
+                  </div>
                 </div>
               </div>
             );

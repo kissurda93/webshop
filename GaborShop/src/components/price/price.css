@@ -11,13 +11,19 @@
   margin-left: 1rem;
 }
 
+.price {
+  color: var(--dark-purple);
+  font-size: 1.4rem;
+}
+
 .old-price {
   text-decoration: line-through;
   opacity: 0.8;
+  font-size: 1rem;
 }
 
 .new-price {
   color: rgb(158, 2, 2);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 500;
 }
