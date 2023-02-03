@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap");
 
+@font-face {
+  font-family: "ZingRust";
+  src: url("./assets/fonts/ZingRustD2Demo-Base.otf") format("opentype");
+}
+
 :root {
   --dark-purple: rgb(66, 72, 116);
   --green: rgb(107, 212, 37);
@@ -32,8 +37,12 @@ body {
   background-color: var(--light-grey);
 }
 
-main {
-  margin: 5rem 2rem 0 2rem;
+.more-margin-main {
+  margin: 5rem 6rem 0 6rem;
+}
+
+.less-margin-main {
+  margin-top: 2rem;
 }
 
 button:hover,

@@ -1,13 +1,13 @@
-import { Outlet } from "react-router-dom";
 import "./header.css";
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
+import axios from "axios";
 import Message from "../../components/Message/Message";
 import { resetMessage } from "../../components/Message/messageSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function UserLayout() {
   const { message, type } = useSelector((state) => state.message);
@@ -39,7 +39,7 @@ export default function UserLayout() {
         <nav className="header-nav">
           <ul>
             <li>
-              <NavLink to={"/"}>Home</NavLink>
+              <NavLink to={"/"}>About</NavLink>
             </li>
             <li>
               <NavLink to={"/products"}>Products</NavLink>
@@ -60,7 +60,13 @@ export default function UserLayout() {
           )}
         </section>
       </header>
-      <main>
+      <main
+        className={
+          window.location.href == "http://localhost:5173/"
+            ? "less-margin-main"
+            : "more-margin-main"
+        }
+      >
         <Message message={message} type={type} />
         <Outlet />
       </main>

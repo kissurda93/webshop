@@ -6,12 +6,14 @@ import Spinner from "../../components/spinners/Spinner";
 import ImageSlider from "../../components/imageSlider/ImageSlider";
 import Price from "../../components/price/Price";
 import Rating from "../../components/rating/Rating";
+import webSql from "../../components/webSql/webSql";
 
 export default function ProductPage() {
   let { id } = useParams();
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     setLoading(true);
@@ -27,8 +29,18 @@ export default function ProductPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleChange = (event) => {
+    setQuantity(event.target.value);
+  };
+
   const handleToCartSubmit = (event) => {
     event.preventDefault();
+    const web_sql = webSql();
+    web_sql.transaction((tx) =>
+      tx.executeSql(
+        `INSERT INTO CART_DATA(product_id, quantity) VALUES(${product.id},${quantity})`
+      )
+    );
   };
 
   return (
@@ -71,6 +83,7 @@ export default function ProductPage() {
                 min={1}
                 max={product.stock}
                 type="number"
+                onChange={handleChange}
               />
             </label>
             <button type="submit">Add to Cart</button>
