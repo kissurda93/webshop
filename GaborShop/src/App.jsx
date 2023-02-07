@@ -10,12 +10,12 @@ import Profile from "./pages/Profile/Profile";
 import ActivatedAccount from "./pages/MessageRoutes/ActivatedAccount";
 import NewPasswordRequest from "./pages/newPasswordRequest/NewPasswordRequest";
 import LandingPage from "./pages/landingpage/LandingPage";
-import webSql from "./components/webSql/webSql";
+import indexed_db from "./indexedDB/indexedDB";
 
 export default function App() {
   useEffect(() => {
-    webSql();
-  }, []);
+    indexed_db();
+  });
 
   return (
     <Routes>

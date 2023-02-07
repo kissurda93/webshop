@@ -6,14 +6,17 @@ import Spinner from "../../components/spinners/Spinner";
 import ImageSlider from "../../components/imageSlider/ImageSlider";
 import Price from "../../components/price/Price";
 import Rating from "../../components/rating/Rating";
-import webSql from "../../components/webSql/webSql";
+import indexed_db from "../../indexedDB/indexedDB";
 
 export default function ProductPage() {
   let { id } = useParams();
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const dbPut = indexed_db("put");
+  const dbGet = indexed_db("get");
 
   useEffect(() => {
     setLoading(true);
@@ -30,17 +33,23 @@ export default function ProductPage() {
   }, []);
 
   const handleChange = (event) => {
-    setQuantity(event.target.value);
+    setQuantity(parseInt(event.target.value));
   };
 
-  const handleToCartSubmit = (event) => {
+  const handleToCartSubmit = async (event) => {
     event.preventDefault();
-    const web_sql = webSql();
-    web_sql.transaction((tx) =>
-      tx.executeSql(
-        `INSERT INTO CART_DATA(product_id, quantity) VALUES(${product.id},${quantity})`
-      )
-    );
+    setButtonLoading(true);
+    const productInCart = await dbGet(product.id);
+    if (productInCart !== undefined) {
+      dbPut({
+        product_id: product.id,
+        quantity: quantity + productInCart.quantity,
+      });
+      setButtonLoading(false);
+    } else {
+      dbPut({ product_id: product.id, quantity });
+      setButtonLoading(false);
+    }
   };
 
   return (
@@ -79,14 +88,15 @@ export default function ProductPage() {
             <label>
               Quantity:
               <input
-                name="quantity"
                 min={1}
                 max={product.stock}
                 type="number"
                 onChange={handleChange}
               />
             </label>
-            <button type="submit">Add to Cart</button>
+            <button type="submit">
+              {buttonLoading ? "..." : "Add to Cart"}
+            </button>
           </form>
         </section>
       )}
