@@ -4,6 +4,7 @@ import { fetchCartProducts } from "./fetchCartProducts";
 const initialState = {
   productsInCart: [],
   quantity: 0,
+  totalPrice: 0,
   status: "idle",
   error: null,
 };
@@ -40,6 +41,20 @@ export const cartProductsSlice = createSlice({
               findProductIndex(state.productsInCart, action.payload.id)
             ].quantity - 1;
     },
+    changeTotalQuantity: (state, action) => {
+      if (action.payload === "increment") {
+        state.quantity = state.quantity + 1;
+      } else {
+        state.quantity = state.quantity - 1;
+      }
+    },
+    changeTotalPrice: (state, action) => {
+      if (action.payload.method === "increment") {
+        state.totalPrice = state.totalPrice + action.payload.price;
+      } else {
+        state.totalPrice = state.totalPrice - action.payload.price;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,6 +64,7 @@ export const cartProductsSlice = createSlice({
       .addCase(fetchCartProducts.fulfilled, (state, action) => {
         state.productsInCart = action.payload.productInfos;
         state.quantity = action.payload.totalQuantity;
+        state.totalPrice = action.payload.totalPrice;
         state.status = "succeeded";
       })
       .addCase(fetchCartProducts.rejected, (state, action) => {
@@ -60,7 +76,11 @@ export const cartProductsSlice = createSlice({
   },
 });
 
-export const { removeProduct, changeProductQuantity } =
-  cartProductsSlice.actions;
+export const {
+  removeProduct,
+  changeProductQuantity,
+  changeTotalQuantity,
+  changeTotalPrice,
+} = cartProductsSlice.actions;
 
 export default cartProductsSlice.reducer;

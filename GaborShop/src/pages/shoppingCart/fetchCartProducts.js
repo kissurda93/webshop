@@ -27,7 +27,16 @@ export const fetchCartProducts = createAsyncThunk(
         0
       );
 
-      return { productInfos, totalQuantity };
+      const prices = productInfos.map(
+        (product) => product.quantity * product.price
+      );
+      const totalPrice = prices.reduce((total, current) => total + current, 0);
+
+      return {
+        productInfos,
+        totalQuantity,
+        totalPrice: parseInt(totalPrice),
+      };
     } catch (error) {
       console.warn(error);
     }

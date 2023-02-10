@@ -41,12 +41,20 @@ export default function ProductPage() {
   const addToCart = async (id, quantity) => {
     try {
       const db = await indexed_db();
-      const product = await get(id, db);
-      if (!product) {
+      const productInDB = await get(id, db);
+      if (!productInDB) {
         await put({ product_id: id, quantity }, db);
       } else {
+        const totalQuantity = productInDB.quantity + quantity;
+        console.log(product.stock);
         await put(
-          { product_id: id, quantity: quantity + product.quantity },
+          {
+            product_id: id,
+            quantity:
+              totalQuantity > product.stock
+                ? product.stock
+                : quantity + product.quantity,
+          },
           db
         );
       }

@@ -25,9 +25,7 @@ export default function Products() {
     dispatch(fetchProducts({ link, searchData }));
   }, [link, searchCounter]);
 
-  const toProductPage = (id) => {
-    return navTo(`/product/${id}`);
-  };
+  const toProductPage = (id) => navTo(`/product/${id}`);
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
