@@ -10,12 +10,16 @@ import Profile from "./pages/Profile/Profile";
 import ActivatedAccount from "./pages/MessageRoutes/ActivatedAccount";
 import NewPasswordRequest from "./pages/newPasswordRequest/NewPasswordRequest";
 import LandingPage from "./pages/landingpage/LandingPage";
-import indexed_db from "./indexedDB/indexedDB";
+import ShoppingCart from "./pages/shoppingCart/ShoppingCart";
+import { fetchCartProducts } from "./pages/shoppingCart/fetchCartProducts";
+import { useDispatch } from "react-redux";
 
 export default function App() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    indexed_db();
-  });
+    dispatch(fetchCartProducts());
+  }, []);
 
   return (
     <Routes>
@@ -26,6 +30,7 @@ export default function App() {
         <Route path="signin" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="shopping-cart" element={<ShoppingCart />} />
         <Route path="/reset-password/:token" element={<NewPasswordRequest />} />
       </Route>
       <Route path="*" element={<NotFound />} />

@@ -7,16 +7,18 @@ import ImageSlider from "../../components/imageSlider/ImageSlider";
 import Price from "../../components/price/Price";
 import Rating from "../../components/rating/Rating";
 import indexed_db from "../../indexedDB/indexedDB";
+import { get, put } from "../../indexedDB/indexedDB";
+import { useDispatch } from "react-redux";
+import { fetchCartProducts } from "../shoppingCart/fetchCartProducts";
 
 export default function ProductPage() {
   let { id } = useParams();
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const dbPut = indexed_db("put");
-  const dbGet = indexed_db("get");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setLoading(true);
@@ -36,20 +38,30 @@ export default function ProductPage() {
     setQuantity(parseInt(event.target.value));
   };
 
-  const handleToCartSubmit = async (event) => {
-    event.preventDefault();
-    setButtonLoading(true);
-    const productInCart = await dbGet(product.id);
-    if (productInCart !== undefined) {
-      dbPut({
-        product_id: product.id,
-        quantity: quantity + productInCart.quantity,
-      });
-      setButtonLoading(false);
-    } else {
-      dbPut({ product_id: product.id, quantity });
-      setButtonLoading(false);
+  const addToCart = async (id, quantity) => {
+    try {
+      const db = await indexed_db();
+      const product = await get(id, db);
+      if (!product) {
+        await put({ product_id: id, quantity }, db);
+      } else {
+        await put(
+          { product_id: id, quantity: quantity + product.quantity },
+          db
+        );
+      }
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      dispatch(fetchCartProducts());
+      setDisabled(false);
     }
+  };
+
+  const handleToCartSubmit = (event) => {
+    event.preventDefault();
+    setDisabled(true);
+    addToCart(product.id, quantity);
   };
 
   return (
@@ -88,14 +100,15 @@ export default function ProductPage() {
             <label>
               Quantity:
               <input
+                placeholder="1"
                 min={1}
                 max={product.stock}
                 type="number"
                 onChange={handleChange}
               />
             </label>
-            <button type="submit">
-              {buttonLoading ? "..." : "Add to Cart"}
+            <button type="submit" disabled={disabled}>
+              Add to Cart
             </button>
           </form>
         </section>

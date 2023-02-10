@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productsReducer from "../pages/Products/productsSlice";
-import messageReducer from "../components/Message/messageSlice";
-import userSlice from "../layouts/UserLayout/userSlice";
+import productsSliceReducer from "../pages/Products/productsSlice";
+import messageSliceReducer from "../components/Message/messageSlice";
+import userSliceReducer from "../layouts/UserLayout/userSlice";
+import cartProductsSliceReducer from "../pages/shoppingCart/cartProductsSlice";
 
 export const store = configureStore({
   reducer: {
-    products: productsReducer,
-    message: messageReducer,
-    user: userSlice,
+    products: productsSliceReducer,
+    message: messageSliceReducer,
+    user: userSliceReducer,
+    cartProducts: cartProductsSliceReducer,
   },
 });

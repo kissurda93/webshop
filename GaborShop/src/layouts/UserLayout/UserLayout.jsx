@@ -8,9 +8,12 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import Message from "../../components/Message/Message";
 import { resetMessage } from "../../components/Message/messageSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 export default function UserLayout() {
   const { message, type } = useSelector((state) => state.message);
+  const cartQuantity = useSelector((state) => state.cartProducts.quantity);
   const dispatch = useDispatch();
   const navTo = useNavigate();
 
@@ -44,21 +47,30 @@ export default function UserLayout() {
             <li>
               <NavLink to={"/products"}>Products</NavLink>
             </li>
+            {Cookies.get("user_token") ? (
+              <>
+                <li>
+                  <NavLink to={"/profile"}>Profile</NavLink>
+                </li>
+                <li>
+                  <NavLink onClick={handleLogOut}>SignOut</NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavLink to={"/signin"}>SignIn</NavLink>
+                </li>
+              </>
+            )}
+            <li>
+              <NavLink to={"/shopping-cart"} className="cart-container">
+                <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+                <span className="cart-quantity">{cartQuantity}</span>
+              </NavLink>
+            </li>
           </ul>
         </nav>
-        <section className="account-section">
-          {Cookies.get("user_token") ? (
-            <>
-              <NavLink to={"/profile"}>Profile</NavLink>
-              <NavLink onClick={handleLogOut}>SignOut</NavLink>
-            </>
-          ) : (
-            <>
-              <NavLink to={"/signin"}>SignIn</NavLink>
-              <NavLink to={"/demoaccount"}>DemoAccount</NavLink>
-            </>
-          )}
-        </section>
       </header>
       <main
         className={

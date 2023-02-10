@@ -34,3 +34,25 @@ header {
   display: block;
   padding: 0.5rem;
 }
+
+.cart-container {
+  position: relative;
+}
+
+.cart-icon {
+  font-size: 1.6rem;
+}
+
+.cart-quantity {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: absolute;
+  bottom: -0;
+  right: -10px;
+  background-color: var(--green);
+  border-radius: 50%;
+  padding-top: 2px;
+}
