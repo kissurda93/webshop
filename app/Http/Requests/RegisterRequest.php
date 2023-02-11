@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CityCheckRule;
+use App\Rules\CountryCheckRule;
+use App\Rules\StateCheckRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -24,9 +27,13 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:60|min:4',
+            'name' => 'required|string|max:60|min:4',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:4',
+            'country' => ['required', 'string', new CountryCheckRule],
+            'state' => ['required', 'string', new StateCheckRule],
+            'city' => ['string', new CityCheckRule],
+            'address' => 'required|string'
         ];
     }
 }

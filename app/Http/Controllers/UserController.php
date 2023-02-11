@@ -31,14 +31,29 @@ class UserController extends Controller
             return response($e->errors());
         }
 
-        $validated['verification_token'] = Str::random(100);
+        $userData = [
+            'email' => $validated['email'],
+            'name' => $validated['name'],
+            'password' => $validated['password'],
+            'verification_token' => Str::random(100)
+        ];
 
-        $user = User::create($validated);
+        $addressData = [
+            'country' => $validated['country'],
+            'state' => $validated['state'],
+            'city' => isset($validated['city']) ? $validated['city'] : $validated['state'],
+            'address' => $validated['address'],
+            'default' => true
+        ];
+
+
+        $user = User::create($userData);
+        $user->addresses()->create($addressData);
         $url = route('account_activate', ['user' => $user->verification_token,]);
 
         Mail::to($user->email)->send(new VerificationMail($url, $user));
 
-        if(!Auth::attempt($validated)) 
+        if(!Auth::attempt($userData)) 
             return response(['message' => 'Sign Up Failed!', 'type' => 'failed'], 422);
 
         $user = auth()->user();

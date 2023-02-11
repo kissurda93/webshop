@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('state');
             $table->string('city');
             $table->string('address');
+            $table->boolean('default')->default(false);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

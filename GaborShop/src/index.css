@@ -60,6 +60,7 @@ input {
   border: none;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: 3px solid var(--green);
 }
