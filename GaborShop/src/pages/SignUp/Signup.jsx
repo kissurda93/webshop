@@ -4,7 +4,7 @@ import ShowInputError from "../../components/Message/ShowInputError";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../../components/Message/messageSlice";
-import { setUser } from "../../layouts/UserLayout/userSlice";
+import { fetchUser } from "../../layouts/UserLayout/fetchUser";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -81,10 +81,7 @@ export default function SignUp() {
       .post(`${import.meta.env.VITE_API_URL}/register`, { ...data })
       .then((result) => {
         Cookies.set("user_token", result.data.token);
-        const { id, name, email } = result.data.user;
-        const userInfo = { id, name, email };
-
-        dispatch(setUser(userInfo));
+        dispatch(fetchUser());
         dispatch(setMessage(result.data.message));
         navTo("/profile");
       })
@@ -196,7 +193,7 @@ export default function SignUp() {
               <ShowInputError status={inputError} inputName="city" />
             </label>
           )}
-          {data.state !== undefined && (
+          {data.country !== undefined && (
             <label>
               Address
               <input name="address" type="text" onChange={handleChange} />

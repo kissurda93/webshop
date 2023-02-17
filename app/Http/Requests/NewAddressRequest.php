@@ -7,7 +7,7 @@ use App\Rules\CountryCheckRule;
 use App\Rules\StateCheckRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class NewAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,13 +27,11 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:60|min:4',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:4',
+            'id' => 'required',
             'country' => ['required', 'string', new CountryCheckRule],
             'state' => [new StateCheckRule],
             'city' => [new CityCheckRule],
-            'address' => 'required|string'
+            'address' => 'required|string',
         ];
     }
 }

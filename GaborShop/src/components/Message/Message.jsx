@@ -1,5 +1,3 @@
-import "./message.css";
-
 export default function Message({ message, type }) {
   return (
     <>

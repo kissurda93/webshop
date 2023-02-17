@@ -23,6 +23,12 @@ use Illuminate\Support\Facades\Password;
 class UserController extends Controller
 {
 
+    public function getUserData(Request $request) {
+        $user = $request->user();
+        $addresses = $user->addresses()->get();
+        return response(compact('user', 'addresses'));
+    }
+
     public function register(RegisterRequest $request) {
         try {
             $validated = $request->validated();
@@ -40,8 +46,8 @@ class UserController extends Controller
 
         $addressData = [
             'country' => $validated['country'],
-            'state' => $validated['state'],
-            'city' => isset($validated['city']) ? $validated['city'] : $validated['state'],
+            'state' => isset($validated['state']) ? $validated['state'] : null,
+            'city' => isset($validated['city']) ? $validated['city'] : null,
             'address' => $validated['address'],
             'default' => true
         ];
@@ -56,12 +62,12 @@ class UserController extends Controller
         if(!Auth::attempt($userData)) 
             return response(['message' => 'Sign Up Failed!', 'type' => 'failed'], 422);
 
-        $user = auth()->user();
+        
         $token = $request->user()->createToken('my_token')->plainTextToken;
         return response(
             ['message' => 'Verification Link Has Been Sent To Your Email Adress!',
             'token' => $token,
-            'user' => $user]);
+            ]);
     }
 
     public function activate(User $user) {
@@ -87,9 +93,9 @@ class UserController extends Controller
         if(!Auth::attempt($validated)) 
             return response(['message' => 'Sign In Failed!', 'type' => 'failed'], 422);
         
-        $user = auth()->user();
+        
         $token = $request->user()->createToken('my_token')->plainTextToken;
-        return response(compact('user', 'token'));
+        return response(compact( 'token'));
     }
 
     public function logout(Request $request) {
@@ -105,7 +111,7 @@ class UserController extends Controller
             return response($e->errors());
         }
         
-        $user = User::find($validated['id'])->first();
+        $user = User::find($validated['id']);
 
         if(!$user)
             return response(['message' => 'Update Failed!', 'type' => 'failed'], 422);

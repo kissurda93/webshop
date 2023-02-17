@@ -13,12 +13,15 @@ import LandingPage from "./pages/landingpage/LandingPage";
 import ShoppingCart from "./pages/shoppingCart/ShoppingCart";
 import { fetchCartProducts } from "./pages/shoppingCart/fetchCartProducts";
 import { useDispatch } from "react-redux";
+import { fetchUser } from "./layouts/UserLayout/fetchUser";
+import Cookies from "js-cookie";
 
 export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchCartProducts());
+    if (Cookies.get("user_token")) dispatch(fetchUser());
   }, []);
 
   return (

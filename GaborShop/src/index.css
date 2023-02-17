@@ -64,3 +64,44 @@ input:focus,
 select:focus {
   outline: 3px solid var(--green);
 }
+
+.message-container {
+  display: flex;
+  justify-content: center;
+}
+
+.message {
+  font-size: 1.4rem;
+  padding: 1rem;
+  margin: 0 auto 2rem auto;
+  border-radius: 5px;
+  color: greenyellow;
+  background-color: var(--dark-purple);
+  max-width: 600px;
+  text-align: center;
+}
+
+.info {
+  font-size: 1.4rem;
+  margin-block: 1rem;
+  color: red;
+}
+
+.message-failed,
+.input-error {
+  color: red;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9;
+}

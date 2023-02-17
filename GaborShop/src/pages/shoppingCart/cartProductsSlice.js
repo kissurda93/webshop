@@ -30,30 +30,39 @@ export const cartProductsSlice = createSlice({
       );
     },
     changeProductQuantity: (state, action) => {
-      state.productsInCart[
-        findProductIndex(state.productsInCart, action.payload.id)
-      ].quantity =
+      const productIndex = findProductIndex(
+        state.productsInCart,
+        action.payload.id
+      );
+      state.productsInCart[productIndex].quantity =
         action.payload.method === "increment"
-          ? state.productsInCart[
-              findProductIndex(state.productsInCart, action.payload.id)
-            ].quantity + 1
-          : state.productsInCart[
-              findProductIndex(state.productsInCart, action.payload.id)
-            ].quantity - 1;
+          ? state.productsInCart[productIndex].quantity + 1
+          : state.productsInCart[productIndex].quantity - 1;
     },
-    changeTotalQuantity: (state, action) => {
-      if (action.payload === "increment") {
-        state.quantity = state.quantity + 1;
-      } else {
-        state.quantity = state.quantity - 1;
-      }
+    changeProductSubTotal: (state, action) => {
+      const productIndex = findProductIndex(
+        state.productsInCart,
+        action.payload.id
+      );
+      state.productsInCart[productIndex].subTotal =
+        action.payload.method === "increment"
+          ? state.productsInCart[productIndex].subTotal +
+            state.productsInCart[productIndex].price
+          : state.productsInCart[productIndex].subTotal -
+            state.productsInCart[productIndex].price;
     },
-    changeTotalPrice: (state, action) => {
-      if (action.payload.method === "increment") {
-        state.totalPrice = state.totalPrice + action.payload.price;
-      } else {
-        state.totalPrice = state.totalPrice - action.payload.price;
-      }
+    changeTotals: (state) => {
+      const newTotalQuantity = state.productsInCart.reduce(
+        (total, product) => total + product.quantity,
+        0
+      );
+
+      const newTotalPrice = state.productsInCart.reduce(
+        (total, product) => total + product.subTotal,
+        0
+      );
+      state.quantity = newTotalQuantity;
+      state.totalPrice = newTotalPrice;
     },
   },
   extraReducers: (builder) => {
@@ -79,8 +88,8 @@ export const cartProductsSlice = createSlice({
 export const {
   removeProduct,
   changeProductQuantity,
-  changeTotalQuantity,
-  changeTotalPrice,
+  changeTotals,
+  changeProductSubTotal,
 } = cartProductsSlice.actions;
 
 export default cartProductsSlice.reducer;

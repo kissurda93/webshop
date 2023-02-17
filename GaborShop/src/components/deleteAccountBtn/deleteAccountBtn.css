@@ -1,8 +1,7 @@
 .delete {
-  margin-top: 2rem;
+  margin: 1rem 0 0 1rem;
   color: red;
   background-color: var(--light-purple);
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
   font-size: 1.4rem;
   padding: 0.3rem 1rem;
   border: none;

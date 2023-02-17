@@ -17,6 +17,7 @@ export default function DeleteAccountBtn({ id }) {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         })
         .then((response) => {
+          Cookies.remove("user_token");
           dispatch(resetUser());
           navTo("/signup");
           dispatch(setMessage("Account Deleted!"));

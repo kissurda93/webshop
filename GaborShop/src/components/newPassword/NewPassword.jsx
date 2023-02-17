@@ -19,7 +19,7 @@ export default function NewPassword({ closeModal, id }) {
     event.preventDefault();
     setLoading(true);
     axios
-      .put(
+      .patch(
         `${import.meta.env.VITE_API_URL}/password_update`,
         { ...data, id },
         {
@@ -45,13 +45,13 @@ export default function NewPassword({ closeModal, id }) {
   };
 
   return (
-    <div class="overlay" onClick={closeModal}>
+    <div className="overlay" onClick={closeModal}>
       <section
-        class="profile-section"
+        className="profile-section"
         onClick={(event) => event.stopPropagation()}
       >
-        <form class="profile-form" onSubmit={handleSubmit}>
-          <div class="input-group">
+        <form className="profile-form" onSubmit={handleSubmit}>
+          <div className="input-group">
             <label>
               Old Password
               <input
@@ -63,7 +63,7 @@ export default function NewPassword({ closeModal, id }) {
               <ShowInputError status={inputError} inputName="old_password" />
             </label>
           </div>
-          <div class="input-group">
+          <div className="input-group">
             <label>
               New Password
               <input
@@ -75,7 +75,7 @@ export default function NewPassword({ closeModal, id }) {
               <ShowInputError status={inputError} inputName="password" />
             </label>
           </div>
-          <div class="input-group">
+          <div className="input-group">
             <label>
               Password Confirmation
               <input
@@ -86,7 +86,7 @@ export default function NewPassword({ closeModal, id }) {
               />
             </label>
           </div>
-          <div class="button-group">
+          <div className="button-group">
             <button type="submit" disabled={loading}>
               {loading ? "..." : "Save"}
             </button>

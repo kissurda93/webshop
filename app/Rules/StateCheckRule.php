@@ -26,7 +26,11 @@ class StateCheckRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return DB::table('states')->where('name', $value)->count() > 0;
+        if(!$value) {
+            return true;
+        } else {
+            return DB::table('states')->where('name', $value)->count() > 0;
+        }
     }
 
     /**

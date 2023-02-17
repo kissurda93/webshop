@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Models\Address;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,6 @@ Route::post('/search-products', [ProductController::class, 'search']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 
-
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/account_activate/{user:verification_token}', [UserController::class, 'activate']);
@@ -38,14 +38,14 @@ Route::get('/reset-password/{token}', [UserController::class, 'toNewPasswordForm
 Route::post('/reset-password', [UserController::class, 'setNewPassword']);
 
 Route::middleware(['auth:sanctum'])->group(function() {
+  Route::get('/user', [UserController::class, 'getUserData']);
   Route::get('/logout', [UserController::class, 'logout']);
-  Route::put('/user_update', [UserController::class, 'update']);
+  Route::patch('/user_update', [UserController::class, 'update']);
   Route::delete('/user_delete/{id}', [UserController::class, 'destroy']);
-  Route::put('/password_update', [UserController::class, 'updatePassword']);
-});
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+  Route::patch('/password_update', [UserController::class, 'updatePassword']);
+  Route::post('/new-address', [AddressController::class, 'newAddress']);
+  Route::patch('/setDefaultAddress', [AddressController::class, 'setDefault']);
+  Route::delete('/delete-address/{id}', [AddressController::class, 'deleteAddress']);
 });
 
 Route::get('/restoreaccount', function() {

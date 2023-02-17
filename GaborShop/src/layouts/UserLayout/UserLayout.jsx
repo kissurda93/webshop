@@ -10,6 +10,7 @@ import Message from "../../components/Message/Message";
 import { resetMessage } from "../../components/Message/messageSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { resetUser } from "./userSlice";
 
 export default function UserLayout() {
   const { message, type } = useSelector((state) => state.message);
@@ -31,6 +32,7 @@ export default function UserLayout() {
       .get(`${import.meta.env.VITE_API_URL}/logout`, headers)
       .then((result) => {
         Cookies.remove("user_token");
+        dispatch(resetUser());
         navTo("/signin");
       })
       .catch((error) => console.log(error));
@@ -74,7 +76,8 @@ export default function UserLayout() {
       </header>
       <main
         className={
-          window.location.href == "http://localhost:5173/"
+          window.location.href == "http://localhost:5173/" ||
+          window.location.href == "http://localhost:5173/profile"
             ? "less-margin-main"
             : "more-margin-main"
         }

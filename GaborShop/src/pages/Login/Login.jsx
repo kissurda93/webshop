@@ -5,7 +5,7 @@ import ShowInputError from "../../components/Message/ShowInputError";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setMessage, setType } from "../../components/Message/messageSlice";
-import { setUser } from "../../layouts/UserLayout/userSlice";
+import { fetchUser } from "../../layouts/UserLayout/fetchUser";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ForgottenPassword from "../../components/forgottenPassword/ForgottenPassword";
@@ -34,10 +34,7 @@ export default function Login() {
       .post(`${import.meta.env.VITE_API_URL}/login`, { ...data })
       .then((result) => {
         Cookies.set("user_token", result.data.token);
-        const { id, name, email } = result.data.user;
-        const userInfo = { id, name, email };
-
-        dispatch(setUser(userInfo));
+        dispatch(fetchUser());
         navTo("/profile");
       })
       .catch((error) => {

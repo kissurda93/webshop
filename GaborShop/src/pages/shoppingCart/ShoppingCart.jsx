@@ -6,9 +6,9 @@ import indexed_db from "../../indexedDB/indexedDB";
 import { remove, get, put } from "../../indexedDB/indexedDB";
 import {
   removeProduct,
-  changeTotalQuantity,
+  changeTotals,
+  changeProductSubTotal,
   changeProductQuantity,
-  changeTotalPrice,
 } from "./cartProductsSlice";
 import Spinner from "../../components/spinners/Spinner";
 
@@ -26,6 +26,7 @@ export default function ShoppingCart() {
     const removeRequest = await remove(id, db);
     if (removeRequest == "Product deleted") {
       dispatch(removeProduct(id));
+      dispatch(changeTotals());
     }
     setDisabled(false);
   }
@@ -46,11 +47,9 @@ export default function ShoppingCart() {
 
     const putRequest = await put(newProduct, db);
     if (putRequest === "Product added") {
-      dispatch(
-        changeProductQuantity({ id: productInDb.product_id, method: method })
-      );
-      dispatch(changeTotalQuantity(method === "increment" && "increment"));
-      dispatch(changeTotalPrice({ method, price: parseInt(pRedux.price) }));
+      dispatch(changeProductQuantity({ id: productInDb.product_id, method }));
+      dispatch(changeProductSubTotal({ id: productInDb.product_id, method }));
+      dispatch(changeTotals());
     }
   }
 
@@ -75,7 +74,7 @@ export default function ShoppingCart() {
                     />
                     <div className="cart-product-text">
                       <p>{product.title}</p>
-                      <p>${product.price}</p>
+                      <p>${product.price.toFixed(2)}</p>
                     </div>
                     <div className="cart-product-options">
                       <p>
@@ -95,10 +94,7 @@ export default function ShoppingCart() {
                           +
                         </button>
                       </p>
-                      <p>
-                        SubTotal: $
-                        {(product.quantity * product.price).toFixed(2)}
-                      </p>
+                      <p>SubTotal: ${product.subTotal.toFixed(2)}</p>
                       <button
                         onClick={() => deleteProduct(product.id)}
                         disabled={disabled}
@@ -118,7 +114,7 @@ export default function ShoppingCart() {
 
           {productsInCart.length !== 0 && (
             <div className="total-price-container">
-              <p>Total Price: ${totalPrice}</p>
+              <p>Total Price: ${totalPrice.toFixed(2)}</p>
               <button>Buy</button>
             </div>
           )}

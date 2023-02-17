@@ -1,5 +1,3 @@
-import "./message.css";
-
 export default function ShowInputError({ status, inputName }) {
   return (
     <>
