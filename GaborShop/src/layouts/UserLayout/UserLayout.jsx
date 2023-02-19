@@ -49,9 +49,10 @@ export default function UserLayout() {
             <li>
               <NavLink to={"/products"}>Products</NavLink>
             </li>
+
             {Cookies.get("user_token") ? (
               <>
-                <li>
+                <li className="profile-link">
                   <NavLink to={"/profile"}>Profile</NavLink>
                 </li>
                 <li>
@@ -60,6 +61,9 @@ export default function UserLayout() {
               </>
             ) : (
               <>
+                <li className="signup-link">
+                  <NavLink to={"/signup"}>SignUp</NavLink>
+                </li>
                 <li>
                   <NavLink to={"/signin"}>SignIn</NavLink>
                 </li>

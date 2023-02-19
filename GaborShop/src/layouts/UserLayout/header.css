@@ -3,35 +3,21 @@ header {
   top: 0;
   width: 100%;
   z-index: 9999999;
-  display: flex;
-  justify-content: center;
   background-color: var(--light-green);
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: var(--dark-purple);
 }
 
 .header-nav {
-  margin-left: 2rem;
+  margin-inline: 2rem;
 }
 
 .header-nav > ul {
   display: flex;
-  padding: 0;
 }
 
 .header-nav > ul > li {
-  padding: 0.5rem;
-}
-
-.account-section {
-  display: flex;
-  align-items: center;
-  margin-right: 3rem;
-}
-
-.account-section > a {
-  display: block;
   padding: 0.5rem;
 }
 
@@ -55,4 +41,42 @@ header {
   background-color: var(--green);
   border-radius: 50%;
   padding-top: 2px;
+}
+
+.header-nav > ul > li:nth-child(1) {
+  margin-left: auto;
+}
+
+@media (max-width: 650px) {
+  header {
+    font-size: 1rem;
+  }
+
+  .header-nav {
+    margin-inline: 1rem;
+  }
+
+  .cart-icon {
+    font-size: 1.2rem;
+  }
+
+  .cart-quantity {
+    width: 14px;
+    height: 14px;
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 450px) {
+  header {
+    font-size: 0.9rem;
+  }
+
+  .cart-icon {
+    font-size: 1rem;
+  }
+
+  .header-nav > ul > li {
+    padding: 0.3rem;
+  }
 }

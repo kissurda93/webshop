@@ -11,6 +11,7 @@ import {
   changeProductQuantity,
 } from "./cartProductsSlice";
 import Spinner from "../../components/spinners/Spinner";
+import BuyProducts from "./BuyProducts";
 
 export default function ShoppingCart() {
   const { productsInCart, totalPrice, status } = useSelector(
@@ -115,7 +116,7 @@ export default function ShoppingCart() {
           {productsInCart.length !== 0 && (
             <div className="total-price-container">
               <p>Total Price: ${totalPrice.toFixed(2)}</p>
-              <button>Buy</button>
+              <BuyProducts />
             </div>
           )}
         </section>

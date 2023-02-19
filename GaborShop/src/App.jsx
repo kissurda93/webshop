@@ -11,6 +11,7 @@ import ActivatedAccount from "./pages/MessageRoutes/ActivatedAccount";
 import NewPasswordRequest from "./pages/newPasswordRequest/NewPasswordRequest";
 import LandingPage from "./pages/landingpage/LandingPage";
 import ShoppingCart from "./pages/shoppingCart/ShoppingCart";
+import PaymentMessage from "./pages/MessageRoutes/PaymentMessage";
 import { fetchCartProducts } from "./pages/shoppingCart/fetchCartProducts";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./layouts/UserLayout/fetchUser";
@@ -38,6 +39,7 @@ export default function App() {
       </Route>
       <Route path="*" element={<NotFound />} />
       <Route path="/activated" element={<ActivatedAccount />} />
+      <Route path="/payment-message" element={<PaymentMessage />} />
     </Routes>
   );
 }

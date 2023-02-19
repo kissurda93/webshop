@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
 }
 
 h1 {
@@ -54,4 +54,28 @@ h1 {
 
 .landing-button-container > button:hover {
   background-color: var(--green);
+}
+
+@media (max-width: 850px) {
+  .text-container {
+    margin-inline: 1rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .tag-icon {
+    display: none;
+  }
+
+  h1 {
+    font-size: 4rem;
+  }
+
+  .text-container > p {
+    font-size: 1rem;
+  }
+
+  .landing-button-container > button {
+    font-size: 1rem;
+  }
 }

@@ -13,6 +13,7 @@
   background-color: var(--dark-purple);
   color: var(--light-green);
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2rem;
 }
 
 .user-form-section > h2 {
@@ -52,4 +53,25 @@
 .user-form-section > p > a {
   color: var(--light-purple);
   text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+  .user-form-section > h2 {
+    font-size: 1.8rem;
+  }
+
+  .user-form-layout-container {
+    display: block;
+  }
+
+  .user-form > button {
+    font-size: 1.1rem;
+    width: 100px;
+    margin-inline: auto;
+  }
+
+  .user-form > label > select {
+    width: 250px;
+    margin: 0;
+  }
 }

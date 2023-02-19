@@ -26,7 +26,8 @@ class UserController extends Controller
     public function getUserData(Request $request) {
         $user = $request->user();
         $addresses = $user->addresses()->get();
-        return response(compact('user', 'addresses'));
+        $orders =$user->orders()->get();
+        return response(compact('user', 'addresses', 'orders'));
     }
 
     public function register(RegisterRequest $request) {

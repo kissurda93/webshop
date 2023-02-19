@@ -1,0 +1,38 @@
+.user-orders-section {
+  margin-block: 5rem;
+}
+
+.user-orders-section > h2 {
+  font-size: 2.5rem;
+  color: var(--dark-purple);
+}
+
+.user-order-container,
+.empty-user-orders {
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  padding: 1.5rem;
+  margin: 1rem;
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  font-size: 1.4rem;
+}
+
+.user-order-container > p {
+  padding-bottom: 0.8rem;
+}
+
+.user-order-product {
+  display: flex;
+  font-size: 1.2rem;
+  background-color: var(--light-grey);
+  color: var(--dark-purple);
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  border-radius: 4px;
+}
+
+.empty-user-orders {
+  padding: 4rem 8rem;
+}

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SimplePayController;
 use App\Models\Address;
 
 /*
@@ -46,6 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::post('/new-address', [AddressController::class, 'newAddress']);
   Route::patch('/setDefaultAddress', [AddressController::class, 'setDefault']);
   Route::delete('/delete-address/{id}', [AddressController::class, 'deleteAddress']);
+  Route::post('/simplePay-request', [SimplePayController::class, 'start']);
 });
 
 Route::get('/restoreaccount', function() {

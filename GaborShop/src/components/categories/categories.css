@@ -5,7 +5,7 @@
 }
 
 .category {
-  margin: 1rem;
+  margin: 0.5rem;
   padding: 0.5rem;
   border-radius: 10px;
   cursor: pointer;
@@ -15,4 +15,13 @@
 
 .category:hover {
   color: var(--green);
+}
+
+@media (max-width: 650px) {
+  .category {
+    margin: 0.3rem;
+    padding: 0.3rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
 }

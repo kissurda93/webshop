@@ -1,13 +1,14 @@
 .paginater-container {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   margin: 1rem 0 2rem 0;
 }
 
 .paginater-container > button {
   font-size: 1.4rem;
   padding: 0.8rem 1rem;
-  margin-right: 0.5rem;
+  margin: 0.5rem 0.5rem 0 0;
   border: none;
   border-radius: 4px;
   background-color: var(--dark-purple);
@@ -18,4 +19,11 @@
 .paginater-container > button:hover,
 .paginater-container .page-active {
   color: var(--green);
+}
+
+@media (max-width: 650px) {
+  .paginater-container > button {
+    font-size: 1rem;
+    padding: 0.4rem 0.5rem;
+  }
 }

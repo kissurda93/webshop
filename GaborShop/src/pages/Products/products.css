@@ -10,6 +10,7 @@
 .search-form input {
   border-radius: 2px;
   padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .search-form button {
@@ -55,4 +56,11 @@
   padding-bottom: 0.2rem;
   font-size: 1.6rem;
   color: var(--dark-purple);
+}
+
+@media (max-width: 650px) {
+  .img-container > img {
+    width: 100%;
+    height: 100%;
+  }
 }

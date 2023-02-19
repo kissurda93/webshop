@@ -1,4 +1,4 @@
-export default function indexed_db(action) {
+export default function indexed_db() {
   const indexedDB =
     window.indexedDB ||
     window.mozIndexedDB ||
@@ -75,6 +75,17 @@ export const remove = (id, db) => {
   return new Promise((resolve, reject) => {
     const deleteRequest = tx.objectStore("shopping_cart").delete(id);
     deleteRequest.onsuccess = () => resolve("Product deleted");
+    deleteRequest.onerror = (error) => reject(new Error(error));
+  });
+};
+
+export const clear = (db) => {
+  const tx = db.transaction("shopping_cart", "readwrite");
+  tx.onerror = (error) => console.warn(error);
+
+  return new Promise((resolve, reject) => {
+    const deleteRequest = tx.objectStore("shopping_cart").clear();
+    deleteRequest.onsuccess = () => resolve("Store is clear");
     deleteRequest.onerror = (error) => reject(new Error(error));
   });
 };

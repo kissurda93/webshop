@@ -9,6 +9,16 @@ const initialState = {
   error: null,
 };
 
+const parsingJsonInOrders = (object) => {
+  return object.map((item) => {
+    return {
+      ...item,
+      products_data: JSON.parse(item.products_data),
+      address: JSON.parse(item.address),
+    };
+  });
+};
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -49,9 +59,10 @@ export const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        const { userInfo, userAddresses } = action.payload;
+        const { userInfo, userAddresses, userOrders } = action.payload;
         state.userInfo = userInfo;
         state.userAddresses = userAddresses;
+        state.userOrders = parsingJsonInOrders(userOrders);
         state.status = "succeeded";
       })
       .addCase(fetchUser.rejected, (state, action) => {

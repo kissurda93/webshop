@@ -9,7 +9,8 @@ export const fetchUser = createAsyncThunk("user/getUserData", async () => {
     });
     const userInfo = response.data.user;
     const userAddresses = response.data.addresses;
-    return { userInfo, userAddresses };
+    const userOrders = response.data.orders;
+    return { userInfo, userAddresses, userOrders };
   } catch (error) {
     console.warn(error);
   }

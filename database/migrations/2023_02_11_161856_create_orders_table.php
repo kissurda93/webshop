@@ -23,8 +23,8 @@ return new class extends Migration
             $table->text('payment_status');
             $table->text('delivery_status');
             $table->string('order_ref');
-            $table->boolean('ipn_status');
-            $table->string('ipn_response');
+            $table->boolean('ipn_status')->nullable();
+            $table->string('ipn_response')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });
