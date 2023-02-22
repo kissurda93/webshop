@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::post('/simplePay-request', [SimplePayController::class, 'start']);
 });
 
-Route::get('/restoreaccount', function() {
-  User::withTrashed()->where('email', 'jg19930610@gmail.com')->restore();
-  return response([]);
-});
+Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
+
+Route::post('/register-admin', [AdminController::class, 'register']);
+Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);

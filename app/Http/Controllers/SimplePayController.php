@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\PaymentRequest;
+use App\Models\Order;
 
 class SimplePayController extends Controller
 {
@@ -25,24 +26,31 @@ class SimplePayController extends Controller
     }
 
     public function start(PaymentRequest $request) {
-        $validated = $request->validated();
 
         // Collect and supplement user infos from database
         // -----------------------------------------------------------
-        $user = User::find($validated['id']);
+        $user = User::find($request['id']);
 
-        $address = $user->addresses()->where('default', 1)->first();
-        if(!isset($address['state'])) {
-            $address['state'] = $address['country'];
+        function checkAddress ($array) {
+            if(!isset($array['state'])) {
+                $array['state'] = $array['country'];
+            }
+            if(!isset($array['city'])) {
+                $array['city'] = $array['state'];
+            }
+            return $array;
         }
-        if(!isset($address['city'])) {
-            $address['city'] = $address['state'];
-        }
+
+        $invoiceAddress = $user->addresses()->find($request['invoice']);
+        $invoiceAddress = checkAddress($invoiceAddress);
+
+        $deliveryAddress = $user->addresses()->find($request['delivery']);
+        $deliveryAddress = checkAddress($deliveryAddress);        
 
 
         // Collect and supplement the product infos from database
         // -------------------------------------------------------
-        $products = $validated['products'];
+        $products = $request['products'];
         $productsInDB = collect();
 
         foreach($products as $product) {
@@ -66,7 +74,8 @@ class SimplePayController extends Controller
             'user_data' => json_encode($user),
             'products_data' => json_encode($productsInDB),
             'total_price' => $totalPrice,
-            'address' => $address,
+            'invoice_address' => json_encode($invoiceAddress),
+            'delivery_address' => json_encode($deliveryAddress),
             'payment_status' => 'In Progress',
             'delivery_status' => 'Not Started',
             'order_ref' => $orderRef,
@@ -78,7 +87,7 @@ class SimplePayController extends Controller
         // $responses = Http::pool(function (Pool $pool) use ($productsInDB, $totalPrice) {
         //     foreach($productsInDB as $product) {
         //         $pool->withHeaders([
-        //             'apikey' => env('EXCHANGE_RATES_DATA_API_KEY'),
+        //             'apikey' => config('simplePay.CONVERTER_API_KEY'),
         //         ])->get('https://api.apilayer.com/exchangerates_data/convert', [
         //         'from' => 'USD',
         //         'to' => 'HUF',
@@ -173,14 +182,23 @@ class SimplePayController extends Controller
         // INVOICE DATA
         //-----------------------------------------------------------------------------------------
         $this->trx->addGroupData('invoice', 'name', $user->name);
-        //$this->trx->addGroupData('invoice', 'company', '');
-        $this->trx->addGroupData('invoice', 'country', $address->country);
-        $this->trx->addGroupData('invoice', 'state', $address->state);
-        $this->trx->addGroupData('invoice', 'city', $address->city);
+        $this->trx->addGroupData('invoice', 'country', $invoiceAddress->country);
+        $this->trx->addGroupData('invoice', 'state', $invoiceAddress->state);
+        $this->trx->addGroupData('invoice', 'city', $invoiceAddress->city);
         $this->trx->addGroupData('invoice', 'zip', '1111');
-        $this->trx->addGroupData('invoice', 'address', $address->address);
-        //$this->trx->addGroupData('invoice', 'address2', 'Address 2');
-        //$this->trx->addGroupData('invoice', 'phone', '06201234567');
+        $this->trx->addGroupData('invoice', 'address', $invoiceAddress->address);
+
+        // DELIVERY DATA
+        //-----------------------------------------------------------------------------------------
+        
+        $this->trx->addGroupData('delivery', 'name', $user->name);
+        $this->trx->addGroupData('delivery', 'country', $deliveryAddress->country);
+        $this->trx->addGroupData('delivery', 'state', $deliveryAddress->state);
+        $this->trx->addGroupData('delivery', 'city', $deliveryAddress->city);
+        $this->trx->addGroupData('delivery', 'zip', '1111');
+        $this->trx->addGroupData('delivery', 'address', $deliveryAddress->address);
+        
+
 
 
         //payment starter element
@@ -207,14 +225,14 @@ class SimplePayController extends Controller
     }
 
     public function ipn() {
-        $json = file_get_contents('php://input');
+        $input_json = file_get_contents('php://input');
 
-        $input = (array) json_decode($json);
+        $input = (array) json_decode($input_json);
 
 
         //check signature and confirm IPN
         //-----------------------------------------------------------------------------------------
-        if ($this->trxIPN->isIpnSignatureCheck($json)) {
+        if ($this->trxIPN->isIpnSignatureCheck($input_json)) {
             /**
              * Generates all response
              * Puts signature into header
@@ -223,6 +241,14 @@ class SimplePayController extends Controller
              * Use this OR getIpnConfirmContent
              */
             $this->trxIPN->runIpnConfirm();
+            $orderRef = $this->trxIPN->logOrderRef;
+            $order = Order::where('order_ref', $orderRef)->first();
+            $order->update([
+                'payment_status' => 'Successfull',
+                'delivery_status' => 'Started',
+                'ipn_status' => true,
+                'ipn_response' => $input_json,
+            ]);
 
             /**
              * Generates all response

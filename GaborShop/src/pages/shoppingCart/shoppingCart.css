@@ -109,6 +109,35 @@
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
 }
 
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark-purple);
+  color: var(--light-green);
+  font-size: 1.4rem;
+  padding: 3rem;
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.payment-form select {
+  font-size: 1.3rem;
+  margin: 0 0 1rem 1rem;
+  padding: 0.2rem;
+  border-radius: 4px;
+}
+
+.payment-form > button {
+  align-self: center;
+  font-size: 1.4rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--green);
+  color: var(--dark-purple);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 @media (max-width: 650px) {
   .cart-product-container,
   .empty-container {

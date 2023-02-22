@@ -37,4 +37,6 @@ return [
     'AUTOCHALLENGE' => true,                      //in case of unsuccessful payment with registered card run automatic challange
 
     'CURRENCY' => 'HUF',
+
+    'CONVERTER_API_KEY' => env('EXCHANGE_RATES_DATA_API_KEY'),
 ];

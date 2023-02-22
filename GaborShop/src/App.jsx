@@ -16,6 +16,8 @@ import { fetchCartProducts } from "./pages/shoppingCart/fetchCartProducts";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./layouts/UserLayout/fetchUser";
 import Cookies from "js-cookie";
+import AdminLayout from "./layouts/AdminLayout/AdminLayout";
+import AdminLogin from "./pages/adminLogin/AdminLogin";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -40,6 +42,8 @@ export default function App() {
       <Route path="*" element={<NotFound />} />
       <Route path="/activated" element={<ActivatedAccount />} />
       <Route path="/payment-message" element={<PaymentMessage />} />
+      <Route path="/admin" element={<AdminLayout />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
     </Routes>
   );
 }

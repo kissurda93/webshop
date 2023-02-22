@@ -9,13 +9,19 @@ export default function ProfileOrders() {
         <h2>Orders</h2>
         {orders.length > 0 ? (
           orders.map((order) => {
-            const { country, state, city, address } = order.address;
             return (
               <div className="user-order-container" key={order.id}>
                 <p>Payment Status: {order.payment_status}</p>
                 <p>Delivery Status: {order.delivery_status}</p>
                 <p>Order Reference Number: {order.order_ref}</p>
-                <p>Address: {`${city} ${address}`}</p>
+                <p>
+                  Invoice Address:{" "}
+                  {`${order.invoice_address.city} ${order.invoice_address.address}`}
+                </p>
+                <p>
+                  Delivery Address:{" "}
+                  {`${order.delivery_address.city} ${order.delivery_address.address}`}
+                </p>
                 <p>Total Price: ${order.total_price}</p>
                 {order.products_data.map((product) => {
                   return (

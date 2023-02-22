@@ -19,7 +19,8 @@ return new class extends Migration
             $table->longText('user_data');
             $table->longText('products_data');
             $table->decimal('total_price', 10, 2, true);
-            $table->text('address');
+            $table->text('invoice_address');
+            $table->text('delivery_address');
             $table->text('payment_status');
             $table->text('delivery_status');
             $table->string('order_ref');

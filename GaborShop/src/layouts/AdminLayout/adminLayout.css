@@ -1,0 +1,25 @@
+.admin-aside {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--dark-grey);
+  color: var(--tomato);
+  padding: 3rem;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.admin-aside li {
+  cursor: pointer;
+  padding-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.admin-aside a {
+  cursor: pointer;
+  font-size: 1.6rem;
+}

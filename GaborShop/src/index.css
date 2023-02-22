@@ -11,6 +11,9 @@
   --light-purple: rgb(220, 214, 247);
   --light-green: rgb(214, 229, 227);
   --light-grey: rgb(202, 207, 214);
+  --tomato: rgb(239, 99, 81);
+  --dark-grey: rgb(71, 91, 90);
+  --yellow: rgb(255, 230, 109);
 }
 
 * {
