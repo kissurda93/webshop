@@ -11,7 +11,6 @@ import Spinner from "../../components/spinners/Spinner";
 import Paginater from "../../components/paginater/Paginater";
 import Categories from "../../components/categories/Categories";
 import Price from "../../components/price/Price";
-import Rating from "../../components/rating/Rating";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -88,7 +87,6 @@ export default function Products() {
                       discountPercentage={product.discountPercentage}
                       inList={true}
                     />
-                    <Rating rating={product.rating} />
                   </div>
                 </div>
               </div>

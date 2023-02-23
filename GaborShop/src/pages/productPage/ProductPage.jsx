@@ -5,7 +5,6 @@ import axios from "axios";
 import Spinner from "../../components/spinners/Spinner";
 import ImageSlider from "../../components/imageSlider/ImageSlider";
 import Price from "../../components/price/Price";
-import Rating from "../../components/rating/Rating";
 import indexed_db from "../../indexedDB/indexedDB";
 import { get, put } from "../../indexedDB/indexedDB";
 import { useDispatch } from "react-redux";
@@ -101,7 +100,6 @@ export default function ProductPage() {
                 price={product.price}
                 discountPercentage={product.discountPercentage}
               />
-              <Rating rating={product.rating} />
             </div>
           </div>
           <form onSubmit={handleToCartSubmit} className="add-to-cart-form">

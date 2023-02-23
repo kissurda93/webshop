@@ -1,39 +1,98 @@
 import "./adminLayout.css";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { fetchAdminData } from "./fetchAdminData";
+import Spinner from "../../components/spinners/Spinner";
+import { resetAdminData } from "./adminDataSlice";
+import AdminProducts from "../../components/adminproducts/AdminProducts";
+import AdminOrders from "../../components/adminOrders/AdminOrders";
+import AdminUsers from "../../components/adminUsers/AdminUsers";
+
+const showComponentsAllFalse = {
+  products: false,
+  orders: false,
+  users: false,
+};
 
 export default function AdminLayout() {
   const navTo = useNavigate();
-
-  const checkUser = () => {
-    if (!Cookies.get("admin_token")) navTo("/profile");
-  };
+  const dispatch = useDispatch();
+  const [showComponent, setShowComponent] = useState({
+    products: true,
+    orders: false,
+    users: false,
+  });
+  const { status } = useSelector((state) => state.adminData);
 
   useEffect(() => {
-    checkUser();
+    if (!Cookies.get("admin_token")) navTo("/admin-login");
+    if (Cookies.get("admin_token")) dispatch(fetchAdminData());
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     Cookies.remove("admin_token");
+    dispatch(resetAdminData());
     navTo("/admin-login");
+  };
+
+  const handleComponentChange = (e) => {
+    e.preventDefault();
+    setShowComponent({
+      ...showComponentsAllFalse,
+      [e.target.getAttribute("data-link")]: true,
+    });
   };
 
   return (
     <>
-      <aside className="admin-aside">
-        <nav className="admin-nav">
-          <ul>
-            <li>Products</li>
-            <li>Orders</li>
-            <li>Users</li>
-          </ul>
-        </nav>
-        <nav>
-          <a onClick={handleLogout}>Sign Out</a>
-        </nav>
-      </aside>
-      <main></main>
+      {status === "loading" ? (
+        <Spinner />
+      ) : (
+        <>
+          <aside className="admin-aside">
+            <nav className="admin-nav">
+              <ul>
+                <li>
+                  <a
+                    href="/"
+                    data-link="products"
+                    onClick={handleComponentChange}
+                  >
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/"
+                    data-link="orders"
+                    onClick={handleComponentChange}
+                  >
+                    Orders
+                  </a>
+                </li>
+                <li>
+                  <a href="/" data-link="users" onClick={handleComponentChange}>
+                    Users
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <nav>
+              <a href="/" onClick={handleLogout}>
+                Sign Out
+              </a>
+            </nav>
+          </aside>
+          <main className="left-margin-main">
+            {showComponent.products && <AdminProducts />}
+            {showComponent.orders && <AdminOrders />}
+            {showComponent.users && <AdminUsers />}
+          </main>
+        </>
+      )}
     </>
   );
 }

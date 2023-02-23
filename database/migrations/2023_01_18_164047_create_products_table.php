@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('brand')->nullable();
             $table->string('thumbnail')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

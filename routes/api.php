@@ -55,3 +55,6 @@ Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
 
 Route::post('/register-admin', [AdminController::class, 'register']);
 Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);
+Route::get('/>>>admin-data<<<', [AdminController::class, 'getData']);
+Route::patch('/>>>update-product<<<', [AdminController::class, 'updateProduct']);
+Route::delete('/>>>delete-product<<</{id}', [AdminController::class, 'deleteProduct']);

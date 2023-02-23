@@ -9,7 +9,7 @@
   background-color: var(--dark-grey);
   color: var(--tomato);
   padding: 3rem;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .admin-aside li {

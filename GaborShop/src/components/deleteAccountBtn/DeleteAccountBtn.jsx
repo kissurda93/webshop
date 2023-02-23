@@ -11,7 +11,7 @@ export default function DeleteAccountBtn({ id }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    if (window.confirm("Are You Sure You Want To Delete Your Account")) {
+    if (window.confirm("Are You Sure You Want To Delete Your Account?")) {
       axios
         .delete(`${import.meta.env.VITE_API_URL}/user_delete/${id}`, {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },

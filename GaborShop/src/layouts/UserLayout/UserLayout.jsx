@@ -5,23 +5,22 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import axios from "axios";
-import Message from "../../components/Message/Message";
-import { resetMessage } from "../../components/Message/messageSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { resetUser } from "./userSlice";
+import { fetchCartProducts } from "../../pages/shoppingCart/fetchCartProducts";
+import { fetchUser } from "./fetchUser";
 
 export default function UserLayout() {
-  const { message, type } = useSelector((state) => state.message);
   const cartQuantity = useSelector((state) => state.cartProducts.quantity);
   const dispatch = useDispatch();
   const navTo = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(resetMessage());
-    }, 5000);
-  }, [message]);
+    if (Cookies.get("admin_token")) navTo("/admin");
+    dispatch(fetchCartProducts());
+    if (Cookies.get("user_token")) dispatch(fetchUser());
+  }, []);
 
   const handleLogOut = (event) => {
     const headers = {
@@ -85,7 +84,6 @@ export default function UserLayout() {
             : "more-margin-main"
         }
       >
-        <Message message={message} type={type} />
         <Outlet />
       </main>
     </>

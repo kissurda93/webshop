@@ -1,11 +1,14 @@
 import "./adminLogin.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setMessage, setType } from "../../components/Message/messageSlice";
 import Cookies from "js-cookie";
 import axios from "axios";
 
 export default function AdminLogin() {
   const navTo = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +40,8 @@ export default function AdminLogin() {
       Cookies.set("admin_token", response.data.token);
       navTo("/admin");
     } catch (error) {
-      console.warn(error);
+      dispatch(setType("failed"));
+      dispatch(setMessage(error.response.data.message));
     } finally {
       setLoading(false);
     }
@@ -55,7 +59,9 @@ export default function AdminLogin() {
           Password
           <input type="password" name="password" onChange={handleChange} />
         </label>
-        <button type="submit">Sign In</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "..." : "Sign In"}
+        </button>
       </form>
     </main>
   );
