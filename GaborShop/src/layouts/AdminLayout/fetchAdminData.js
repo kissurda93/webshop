@@ -14,7 +14,15 @@ export const fetchAdminData = createAsyncThunk(
           },
         }
       );
+
       const { products, orders, users } = response.data;
+      orders.forEach((order) => {
+        order.user_data = JSON.parse(order.user_data);
+        order.products_data = JSON.parse(order.products_data);
+        order.invoice_address = JSON.parse(order.invoice_address);
+        order.delivery_address = JSON.parse(order.delivery_address);
+      });
+
       return { products, orders, users };
     } catch (error) {
       throw error;

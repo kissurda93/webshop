@@ -20,7 +20,7 @@ export default function PaymentMessage() {
         const db = await indexed_db();
         const clearRequest = await clear(db);
         if (clearRequest === "Store is clear") {
-          dispatch(setMessage("Payment was successfully!"));
+          dispatch(setMessage("Payment on progress!"));
           navTo("/shopping-cart");
         }
         break;

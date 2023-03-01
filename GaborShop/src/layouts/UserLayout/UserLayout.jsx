@@ -17,7 +17,6 @@ export default function UserLayout() {
   const navTo = useNavigate();
 
   useEffect(() => {
-    if (Cookies.get("admin_token")) navTo("/admin");
     dispatch(fetchCartProducts());
     if (Cookies.get("user_token")) dispatch(fetchUser());
   }, []);

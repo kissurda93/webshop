@@ -1,5 +1,10 @@
 import "./profileOrders.css";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleExclamation,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function ProfileOrders() {
   const orders = useSelector((state) => state.user.userOrders);
@@ -11,8 +16,36 @@ export default function ProfileOrders() {
           orders.map((order) => {
             return (
               <div className="user-order-container" key={order.id}>
-                <p>Payment Status: {order.payment_status}</p>
-                <p>Delivery Status: {order.delivery_status}</p>
+                <p>
+                  Payment Status: {order.payment_status}{" "}
+                  <FontAwesomeIcon
+                    icon={
+                      order.payment_status === "Successfull"
+                        ? faCircleCheck
+                        : faCircleExclamation
+                    }
+                    color={
+                      order.payment_status === "Successfull"
+                        ? "green"
+                        : "var(--tomato)"
+                    }
+                  />
+                </p>
+                <p>
+                  Delivery Status: {order.delivery_status}{" "}
+                  <FontAwesomeIcon
+                    icon={
+                      order.delivery_status === "Completed"
+                        ? faCircleCheck
+                        : faCircleExclamation
+                    }
+                    color={
+                      order.delivery_status === "Completed"
+                        ? "green"
+                        : "var(--tomato)"
+                    }
+                  />
+                </p>
                 <p>Order Reference Number: {order.order_ref}</p>
                 <p>
                   Invoice Address:{" "}

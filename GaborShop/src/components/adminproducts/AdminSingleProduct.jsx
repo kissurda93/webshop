@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
-  setAdminProductData,
+  updateAdminProductData,
   deleteAdminProduct,
 } from "../../layouts/AdminLayout/adminDataSlice";
 
@@ -39,7 +39,7 @@ export default function AdminSingleProduct({
           },
         }
       );
-      if (response.status === 200) dispatch(setAdminProductData(data));
+      if (response.status === 200) dispatch(updateAdminProductData(data));
     } catch (error) {
       console.warn(error);
     } finally {
@@ -90,10 +90,6 @@ export default function AdminSingleProduct({
             <p>{singleProduct.title}</p>
           </label>
           <label>
-            Brand:
-            <p>{singleProduct.brand}</p>
-          </label>
-          <label>
             Stock:
             <input
               name="stock"
@@ -110,14 +106,14 @@ export default function AdminSingleProduct({
               type="number"
               min="0"
               step="0.01"
-              defaultValue={data.discount}
+              defaultValue={data.discount ? data.discount : "0.00"}
               onChange={handleChange}
             />
           </label>
 
           <Price
             price={singleProduct.price}
-            discountPercentage={data.discount}
+            discountPercentage={data.discount ? data.discount : "0.00"}
           />
           <button type="submit" disabled={loading}>
             {loading ? "..." : "Save"}

@@ -18,7 +18,7 @@ export const adminDataSlice = createSlice({
       state.orders = initialState.orders;
       state.users = initialState.users;
     },
-    setAdminProductData: (state, action) => {
+    updateAdminProductData: (state, action) => {
       const productIndex = state.products.findIndex(
         (product) => product.id === action.payload.id
       );
@@ -29,6 +29,15 @@ export const adminDataSlice = createSlice({
       state.products = state.products.filter(
         (product) => product.id != action.payload
       );
+    },
+    newAdminProduct: (state, action) => {
+      state.products.push(action.payload);
+    },
+    updateOrderDeliveryStatus: (state, action) => {
+      const orderIndex = state.orders.findIndex(
+        (order) => order.id === action.payload
+      );
+      state.orders[orderIndex].delivery_status = "Completed";
     },
   },
   extraReducers: (builder) => {
@@ -49,7 +58,12 @@ export const adminDataSlice = createSlice({
   },
 });
 
-export const { resetAdminData, setAdminProductData, deleteAdminProduct } =
-  adminDataSlice.actions;
+export const {
+  resetAdminData,
+  updateAdminProductData,
+  deleteAdminProduct,
+  newAdminProduct,
+  updateOrderDeliveryStatus,
+} = adminDataSlice.actions;
 
 export default adminDataSlice.reducer;

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SimplePayController;
-use App\Models\Address;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +21,19 @@ use App\Models\Address;
 |
 */
 
+// Location endpoints to forms:
 Route::get('/countries', [AddressController::class, 'getCountries']);
 Route::get('/states/{id}', [AddressController::class, 'getStates']);
 Route::get('/cities/{id}', [AddressController::class, 'getCities']);
 
+// Product and category:
 Route::get('/products/{category?}', [ProductController::class, 'index']);
 Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::post('/search-products', [ProductController::class, 'search']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 
+// User related:
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/account_activate/{user:verification_token}', [UserController::class, 'activate']);
@@ -51,10 +53,16 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::post('/simplePay-request', [SimplePayController::class, 'start']);
 });
 
+// IPN receiver endpoint to SimplePay:
 Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
 
+// Admin related:
 Route::post('/register-admin', [AdminController::class, 'register']);
 Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);
-Route::get('/>>>admin-data<<<', [AdminController::class, 'getData']);
-Route::patch('/>>>update-product<<<', [AdminController::class, 'updateProduct']);
-Route::delete('/>>>delete-product<<</{id}', [AdminController::class, 'deleteProduct']);
+Route::middleware(['admin'])->group(function() {
+  Route::get('/>>>admin-data<<<', [AdminController::class, 'getData']);
+  Route::patch('/>>>update-order<<<', [AdminController::class, 'updateOrder']);
+  Route::patch('/>>>update-product<<<', [ProductController::class, 'updateProduct']);
+  Route::delete('/>>>delete-product<<</{id}', [ProductController::class, 'deleteProduct']);
+  Route::post('/>>>new-product<<<', [ProductController::class, 'createProduct']);
+});

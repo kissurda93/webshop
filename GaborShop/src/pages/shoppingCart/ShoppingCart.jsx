@@ -47,7 +47,7 @@ export default function ShoppingCart() {
     }
 
     const putRequest = await put(newProduct, db);
-    if (putRequest === "Product added") {
+    if (putRequest === "Product added to Cart!") {
       dispatch(changeProductQuantity({ id: productInDb.product_id, method }));
       dispatch(changeProductSubTotal({ id: productInDb.product_id, method }));
       dispatch(changeTotals());

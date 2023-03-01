@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import UserLayout from "./layouts/UserLayout/UserLayout";
-import NotFound from "./pages/NotFound/NotFound";
 import Products from "./pages/Products/Products";
 import ProductPage from "./pages/productPage/ProductPage";
 import Login from "./pages/Login/Login";
@@ -45,7 +44,6 @@ export default function App() {
             element={<NewPasswordRequest />}
           />
         </Route>
-        <Route path="*" element={<NotFound />} />
         <Route path="/activated" element={<ActivatedAccount />} />
         <Route path="/payment-message" element={<PaymentMessage />} />
         <Route path="/admin" element={<AdminLayout />} />

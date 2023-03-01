@@ -43,7 +43,6 @@ export default function Products() {
               name="search"
               onChange={(event) =>
                 setSearchData({
-                  ...searchData,
                   [event.target.name]: event.target.value,
                 })
               }
@@ -62,7 +61,8 @@ export default function Products() {
       <section className="products">
         {status === "loading" ? (
           <Spinner />
-        ) : productsList ? (
+        ) : (
+          productsList &&
           productsList.map((product) => {
             return (
               <div
@@ -92,8 +92,6 @@ export default function Products() {
               </div>
             );
           })
-        ) : (
-          ""
         )}
       </section>
       <Paginater setLink={setLink} />

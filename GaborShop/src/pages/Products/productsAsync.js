@@ -11,7 +11,7 @@ export const fetchProducts = createAsyncThunk(
       return postResponse.data.data;
     } else {
       let response = await axios.get(link);
-      return response.data.data;
+      return response.data;
     }
   }
 );

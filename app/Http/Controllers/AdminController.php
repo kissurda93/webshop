@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Admin;
-use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -44,42 +43,25 @@ class AdminController extends Controller
     }
 
     public function getData(Request $request) {
-        $requestToken = $request->header('adminToken');
-        if(!Hash::check(config('auth.admin-token'), $requestToken))
-            return response([], 401);
-
+        
         $products = Product::with(['categories', 'images'])->get();
         $orders = Order::all();
-        $users = User::with('addresses')->get();
+        $users = User::with(['addresses', 'orders:id,user_id,order_ref'])->get();
 
         return response(compact('products', 'orders', 'users'));
     }
 
-    public function updateProduct(ProductUpdateRequest $request) {
-        $requestToken = $request->header('adminToken');
-        if(!Hash::check(config('auth.admin-token'), $requestToken))
-            return response([], 401);
+    public function updateOrder(Request $request) {
+        $validated = $request->validate([
+            'id' => 'required',
+            'delivery_status' => 'required',
+        ]);
 
-        $validated = $request->validated();
-        $product = Product::find($validated['id']);
-        if(!$product)
-            return response(['message' => 'Product not find'], 404);
+        $order = Order::find($validated['id']);
+        $order->update([
+            'delivery_status' => $validated['delivery_status']
+        ]);
 
-        if($product['stock'] != $validated['stock'])
-            $product->update(['stock' => $validated['stock']]);
-
-        if($product['discountPercentage'] != $validated['discount'])
-            $product->update(['discountPercentage' => $validated['discount']]);
-
-        return response(['message' => 'Product updated successfully!']);
-    }
-
-    public function deleteProduct(Request $request, $id) {
-        $requestToken = $request->header('adminToken');
-        if(!Hash::check(config('auth.admin-token'), $requestToken))
-            return response([], 401);
-
-        Product::find($id)->delete();
         return response([]);
     }
 }

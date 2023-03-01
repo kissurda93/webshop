@@ -1,0 +1,38 @@
+.admin-user-list {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.admin-user-list > div {
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.admin-single-user {
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+  padding: 1rem 3rem;
+  height: 600px;
+  overflow-y: auto;
+}
+
+.admin-single-user > div {
+  margin-bottom: 1rem;
+}
+
+.admin-single-user-addresses > div {
+  background-color: var(--dark-purple);
+  color: var(--light-purple);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+}

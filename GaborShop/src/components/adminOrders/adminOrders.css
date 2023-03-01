@@ -1,0 +1,85 @@
+.admin-order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin-inline: auto;
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
+  max-width: 800px;
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  height: 600px;
+  overflow-y: auto;
+}
+
+.admin-order-container > div {
+  margin: 1rem;
+}
+
+.admin-order-product {
+  background-color: var(--dark-purple);
+  color: var(--light-purple);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin: 0.5rem;
+}
+
+.admin-order-addresses {
+  display: flex;
+}
+
+.admin-order-addresses > div {
+  margin-left: 2rem;
+}
+
+.admin-order-statuses > label {
+  display: flex;
+  background-color: var(--dark-purple);
+  color: var(--light-purple);
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.admin-order-statuses > label > input {
+  align-self: baseline;
+  max-width: max-content;
+  font: inherit;
+}
+
+.admin-order-statuses > label > input:focus {
+  outline: none;
+}
+
+.admin-orders-list {
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.admin-order-inlist {
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.admin-order-container > button {
+  font-size: 1.2rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--dark-purple);
+  color: var(--light-purple);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.admin-order-container > button:hover {
+  background-color: var(--green);
+  color: var(--dark-purple);
+}

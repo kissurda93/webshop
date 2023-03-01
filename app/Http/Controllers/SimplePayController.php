@@ -57,7 +57,6 @@ class SimplePayController extends Controller
             $newProduct = Product::find($product['product_id']);
 
             $newProduct['quantity'] = $product['product_quantity'];
-
             $newProduct['price'] = $newProduct['price'] - $newProduct['price'] * ($newProduct['discountPercentage'] / 100);
             
             $productsInDB->push($newProduct);
@@ -84,30 +83,30 @@ class SimplePayController extends Controller
 
         // Converting USD to HUF via Exchange Rates Data API
         // ------------------------------------------------------------------------------
-        // $responses = Http::pool(function (Pool $pool) use ($productsInDB, $totalPrice) {
-        //     foreach($productsInDB as $product) {
-        //         $pool->withHeaders([
-        //             'apikey' => config('simplePay.CONVERTER_API_KEY'),
-        //         ])->get('https://api.apilayer.com/exchangerates_data/convert', [
-        //         'from' => 'USD',
-        //         'to' => 'HUF',
-        //         'amount' => $product['price'],
-        //     ]);
-        //     }
-        //     $pool->as('total')->withHeaders([
-        //         'apikey' => env('EXCHANGE_RATES_DATA_API_KEY'),
-        //     ])->get('https://api.apilayer.com/exchangerates_data/convert', [
-        //         'from' => 'USD',
-        //         'to' => 'HUF',
-        //         'amount' => $totalPrice,
-        //     ]);
-        // });
+        $responses = Http::pool(function (Pool $pool) use ($productsInDB, $totalPrice) {
+            foreach($productsInDB as $product) {
+                $pool->withHeaders([
+                    'apikey' => config('simplePay.CONVERTER_API_KEY'),
+                ])->get('https://api.apilayer.com/exchangerates_data/convert', [
+                'from' => 'USD',
+                'to' => 'HUF',
+                'amount' => $product['price'],
+            ]);
+            }
+            $pool->as('total')->withHeaders([
+                'apikey' => config('simplePay.CONVERTER_API_KEY'),
+            ])->get('https://api.apilayer.com/exchangerates_data/convert', [
+                'from' => 'USD',
+                'to' => 'HUF',
+                'amount' => $totalPrice,
+            ]);
+        });
 
-        // for ($i = 0; $i <= count($productsInDB) - 1; $i++) {
-        //     $productsInDB[$i]['price'] = round($responses[$i]['result']);
-        // }
+        for ($i = 0; $i <= count($productsInDB) - 1; $i++) {
+            $productsInDB[$i]['price'] = round($responses[$i]['result']);
+        }
 
-        // $totalPrice = round($responses['total']['result']);
+        $totalPrice = round($responses['total']['result']);
 
         
         // Giving data to SimplePay Transaction
@@ -241,6 +240,7 @@ class SimplePayController extends Controller
              * Use this OR getIpnConfirmContent
              */
             $this->trxIPN->runIpnConfirm();
+
             $orderRef = $this->trxIPN->logOrderRef;
             $order = Order::where('order_ref', $orderRef)->first();
             $order->update([
@@ -249,6 +249,15 @@ class SimplePayController extends Controller
                 'ipn_status' => true,
                 'ipn_response' => $input_json,
             ]);
+
+            $productsJSON = $order->products_data;
+            $products = json_decode($productsJSON);
+
+            foreach($products as $product) {
+                $productInDb = Product::find($product['id']);
+                $stock = $productInDb['stock'];
+                $productInDb->update(['stock' => $stock - $product['quantity']]);
+            }
 
             /**
              * Generates all response

@@ -13,9 +13,6 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
 
   const checkUserOrAdmin = () => {
-    if (Cookies.get("user_token")) {
-      return navTo("/profile");
-    }
     if (Cookies.get("admin_token")) {
       return navTo("/admin");
     }

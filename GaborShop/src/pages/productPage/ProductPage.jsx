@@ -9,11 +9,11 @@ import indexed_db from "../../indexedDB/indexedDB";
 import { get, put } from "../../indexedDB/indexedDB";
 import { useDispatch } from "react-redux";
 import { fetchCartProducts } from "../shoppingCart/fetchCartProducts";
+import { setMessage } from "../../components/Message/messageSlice";
 
 export default function ProductPage() {
   let { id } = useParams();
   const [product, setProduct] = useState({});
-  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -24,8 +24,7 @@ export default function ProductPage() {
     axios
       .get(`${import.meta.env.VITE_API_URL}/product/${id}`)
       .then((result) => {
-        setProduct(result.data.product);
-        setImages(result.data.images);
+        setProduct(result.data);
       })
       .catch((error) => {
         console.log(error);
@@ -37,25 +36,34 @@ export default function ProductPage() {
     setQuantity(parseInt(event.target.value));
   };
 
-  const addToCart = async (id, quantity) => {
+  const addToCart = async (product, quantity) => {
     try {
       const db = await indexed_db();
-      const productInDB = await get(id, db);
+      const productInDB = await get(product.id, db);
       if (!productInDB) {
-        await put({ product_id: id, quantity }, db);
+        const response = await put({ product_id: product.id, quantity }, db);
+        if (response === "Product added to Cart!")
+          dispatch(setMessage(response));
       } else {
-        const totalQuantity = productInDB.quantity + quantity;
-        console.log(product.stock);
-        await put(
+        const totalQuantity = parseInt(productInDB.quantity) + quantity;
+        console.log(
+          totalQuantity,
+          product.stock,
+          quantity,
+          productInDB.quantity
+        );
+        const response = await put(
           {
-            product_id: id,
+            product_id: product.id,
             quantity:
               totalQuantity > product.stock
                 ? product.stock
-                : quantity + product.quantity,
+                : quantity + productInDB.quantity,
           },
           db
         );
+        if (response === "Product added to Cart!")
+          dispatch(setMessage(response));
       }
     } catch (error) {
       console.warn(error);
@@ -68,7 +76,7 @@ export default function ProductPage() {
   const handleToCartSubmit = (event) => {
     event.preventDefault();
     setDisabled(true);
-    addToCart(product.id, quantity);
+    addToCart(product, quantity);
   };
 
   return (
@@ -77,7 +85,7 @@ export default function ProductPage() {
         <Spinner />
       ) : (
         <section className="single-product-container">
-          <ImageSlider images={images} />
+          <ImageSlider images={product.images} />
           <div className="product-description">
             <p>
               <span className="product-info-label">Name:</span>

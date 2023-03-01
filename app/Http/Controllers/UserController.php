@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Mail\PasswordMail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\VerificationMail;
@@ -17,7 +16,6 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Requests\ForgottenPasswordRequest;
 use App\Http\Requests\PasswordResetRequest;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller

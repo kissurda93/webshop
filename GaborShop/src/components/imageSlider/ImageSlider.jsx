@@ -8,7 +8,7 @@ import {
 
 export default function ImageSlider({ images }) {
   const [currentImage, setCurrentImage] = useState(0);
-  const length = images.length;
+  const length = images ? images.length : 0;
 
   const nextImage = () => {
     setCurrentImage(currentImage == length - 1 ? 0 : currentImage + 1);
@@ -30,23 +30,24 @@ export default function ImageSlider({ images }) {
         className="right-arrow"
         onClick={() => nextImage()}
       />
-      {images.map((image, index) => {
-        return (
-          <div
-            className={index == currentImage ? "slide-active" : "slide"}
-            key={index}
-          >
-            {index == currentImage && (
-              <img
-                src={image.url}
-                key={image.id}
-                alt="Product image"
-                className="image-in-slide"
-              />
-            )}
-          </div>
-        );
-      })}
+      {images &&
+        images.map((image, index) => {
+          return (
+            <div
+              className={index == currentImage ? "slide-active" : "slide"}
+              key={index}
+            >
+              {index == currentImage && (
+                <img
+                  src={image.url}
+                  key={image.id}
+                  alt="Product image"
+                  className="image-in-slide"
+                />
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 }

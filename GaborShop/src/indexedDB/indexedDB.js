@@ -63,7 +63,7 @@ export const put = (productObject, db) => {
 
   return new Promise((resolve, reject) => {
     const putRequest = tx.objectStore("shopping_cart").put(productObject);
-    putRequest.onsuccess = () => resolve("Product added");
+    putRequest.onsuccess = () => resolve("Product added to Cart!");
     putRequest.onerror = (error) => reject(new Error(error));
   });
 };

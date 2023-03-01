@@ -16,7 +16,6 @@ class Product extends Model
         'description',
         'price',
         'discountPercentage',
-        'rating',
         'stock',
         'brand',
         'thumbnail',

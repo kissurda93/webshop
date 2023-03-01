@@ -29,8 +29,11 @@
 .admin-single-product {
   background-color: var(--light-green);
   margin-block: 2rem;
+  padding: 1rem 3rem;
   border-radius: 4px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  height: 600px;
+  overflow-y: auto;
 }
 
 .admin-product-description {
@@ -66,4 +69,58 @@
 .admin-product-description button:hover {
   background-color: var(--green);
   color: var(--dark-purple);
+}
+
+.new-product-section {
+  display: block;
+  justify-content: first baseline;
+}
+
+.new-product-btn {
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  background-color: var(--light-green);
+  color: var(--dark-purple);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark-grey);
+  color: var(--tomato);
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.admin-form > label {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.admin-form > label > textarea {
+  font-size: 1.3rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+}
+
+.admin-form > label > textarea:focus {
+  outline: 3px solid var(--green);
+}
+
+.admin-form > button {
+  align-self: baseline;
+  font-size: 1.4rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: var(--tomato);
+  color: var(--light-grey);
 }
