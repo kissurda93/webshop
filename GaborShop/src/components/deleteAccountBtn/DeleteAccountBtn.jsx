@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { setMessage, setType } from "../Message/messageSlice";
 import { resetUser } from "../../layouts/UserLayout/userSlice";
 import Cookies from "js-cookie";
-import "./deleteAccountbtn.css";
 
 export default function DeleteAccountBtn({ id }) {
   const navTo = useNavigate();
@@ -29,9 +28,5 @@ export default function DeleteAccountBtn({ id }) {
     }
   };
 
-  return (
-    <button className="delete" onClick={handleDelete}>
-      Delete Account
-    </button>
-  );
+  return <button onClick={handleDelete}>Delete Account</button>;
 }

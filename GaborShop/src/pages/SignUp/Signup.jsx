@@ -48,8 +48,7 @@ export default function SignUp() {
 
       const values = event.target.value;
       const valuesArray = values.split("///");
-      const valueName = valuesArray[0];
-      const valueID = valuesArray[1];
+      const [valueName, valueID] = valuesArray;
 
       setData({
         ...data,
@@ -98,17 +97,17 @@ export default function SignUp() {
       <section className="user-form-section">
         <h2>Please Sign Up</h2>
         <form className="user-form" onSubmit={handleSubmit}>
-          <label>
+          <label id="name">
             Name
             <input name="name" type="text" onChange={handleChange} />
             <ShowInputError status={inputError} inputName="name" />
           </label>
-          <label>
+          <label id="email">
             Email
             <input name="email" type="email" onChange={handleChange} />
             <ShowInputError status={inputError} inputName="email" />
           </label>
-          <label>
+          <label id="password">
             Password
             <input name="password" type="password" onChange={handleChange} />
             <ShowInputError status={inputError} inputName="password" />
@@ -122,7 +121,7 @@ export default function SignUp() {
             />
           </label>
           {countries.length !== 0 && (
-            <label>
+            <label id="country">
               Country
               <select
                 name="country"

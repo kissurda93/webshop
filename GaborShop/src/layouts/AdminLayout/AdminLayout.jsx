@@ -60,6 +60,7 @@ export default function AdminLayout() {
                     href="/"
                     data-link="products"
                     onClick={handleComponentChange}
+                    className={showComponent.products ? "active-admin-nav" : ""}
                   >
                     Products
                   </a>
@@ -69,12 +70,18 @@ export default function AdminLayout() {
                     href="/"
                     data-link="orders"
                     onClick={handleComponentChange}
+                    className={showComponent.orders ? "active-admin-nav" : ""}
                   >
                     Orders
                   </a>
                 </li>
                 <li>
-                  <a href="/" data-link="users" onClick={handleComponentChange}>
+                  <a
+                    href="/"
+                    data-link="users"
+                    onClick={handleComponentChange}
+                    className={showComponent.users ? "active-admin-nav" : ""}
+                  >
                     Users
                   </a>
                 </li>

@@ -13,6 +13,7 @@
   background-color: var(--dark-purple);
   color: var(--light-green);
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
   margin-bottom: 2rem;
 }
 
@@ -73,5 +74,9 @@
   .user-form > label > select {
     width: 250px;
     margin: 0;
+  }
+
+  .user-form > .send-password-link {
+    width: auto;
   }
 }

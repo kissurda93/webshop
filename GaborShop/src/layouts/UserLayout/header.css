@@ -7,6 +7,15 @@ header {
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
   font-size: 1.2rem;
   color: var(--dark-purple);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  margin-block: 0.2rem;
+  margin-inline: 1rem;
 }
 
 .header-nav {
@@ -19,6 +28,24 @@ header {
 
 .header-nav > ul > li {
   padding: 0.5rem;
+}
+
+.header-nav > ul > li > a {
+  background: linear-gradient(
+    to right,
+    var(--green),
+    var(--green),
+    var(--light-green)
+  );
+  background-repeat: no-repeat;
+  background-size: 0 2px;
+  background-position: 100% 100%;
+  transition: background-size 300ms;
+}
+
+.header-nav > ul > li > a:hover,
+.header-nav > ul > li > .active {
+  background-size: 100% 2px;
 }
 
 .cart-container {
@@ -65,18 +92,21 @@ header {
     height: 14px;
     font-size: 0.6rem;
   }
+
+  .logo {
+    width: 40px;
+    margin-block: 0.1rem;
+    margin-inline-end: 0;
+    margin-inline-start: 0.5rem;
+  }
 }
 
 @media (max-width: 450px) {
-  header {
-    font-size: 0.9rem;
-  }
-
   .cart-icon {
     font-size: 1rem;
   }
 
   .header-nav > ul > li {
-    padding: 0.3rem;
+    padding-inline: 0.3rem;
   }
 }

@@ -83,3 +83,14 @@
   background-color: var(--green);
   color: var(--dark-purple);
 }
+
+@media (max-width: 650px) {
+  .admin-order-container {
+    padding: 1rem;
+  }
+
+  .admin-order-addresses {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

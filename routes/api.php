@@ -36,7 +36,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 // User related:
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/account_activate/{user:verification_token}', [UserController::class, 'activate']);
+Route::get('/account_activate/{user:verification_token}', [UserController::class, 'activate'])->name('account-activate');
 Route::post('/user_new_password', [UserController::class, 'newPassword']);
 Route::get('/reset-password/{token}', [UserController::class, 'toNewPasswordForm'])->name('password.reset');
 Route::post('/reset-password', [UserController::class, 'setNewPassword']);

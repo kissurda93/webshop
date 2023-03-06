@@ -15,7 +15,6 @@ export const fetchCartProducts = createAsyncThunk(
         axios.get(`${import.meta.env.VITE_API_URL}/product/${item.product_id}`)
       );
       const resolvedPromises = await Promise.all(promises);
-      console.log(resolvedPromises);
 
       const productInfos = resolvedPromises.map((promise, index) => {
         const productObject = promise.data;

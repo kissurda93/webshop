@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { setMessage } from "../../components/Message/messageSlice";
 import axios from "axios";
 import Cookies from "js-cookie";
+import SimplePayLogo from "../../assets/logo/simplepay.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 export default function BuyProducts() {
   const navTo = useNavigate();
@@ -75,6 +78,22 @@ export default function BuyProducts() {
             className="payment-form"
             onClick={(e) => e.stopPropagation()}
           >
+            <div className="payment-instructions">
+              <p>
+                <FontAwesomeIcon icon={faCircleExclamation} color="orange" /> By
+                clicking on the logo, you will arrive at the SimplePay payment
+                interface. This is a Sandbox interface where you cannot enter a
+                real bank card or account number. However, you can choose
+                between successful and unsuccessful card numbers in the
+                drop-down menu. By default, a successful card number will be
+                selected.
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faCircleExclamation} color="orange" />{" "}
+                Furthermore, the Sandbox account is only available to me for HUF
+                currency, so the prices are converted from USD to HUF!
+              </p>
+            </div>
             <label>
               Invoice Address:
               <select
@@ -111,9 +130,7 @@ export default function BuyProducts() {
                 })}
               </select>
             </label>
-            <button type="submit" disabled={loading}>
-              {loading ? "..." : "SimplePay"}
-            </button>
+            <input type="image" disabled={loading} src={SimplePayLogo} />
           </form>
         </div>
       )}

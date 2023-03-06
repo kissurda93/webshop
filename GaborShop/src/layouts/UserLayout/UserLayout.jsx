@@ -1,6 +1,6 @@
 import "./header.css";
 import { useEffect } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
@@ -10,6 +10,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { resetUser } from "./userSlice";
 import { fetchCartProducts } from "../../pages/shoppingCart/fetchCartProducts";
 import { fetchUser } from "./fetchUser";
+import { ReactComponent as Logo } from "../../assets/logo/jglogo.svg";
 
 export default function UserLayout() {
   const cartQuantity = useSelector((state) => state.cartProducts.quantity);
@@ -21,13 +22,13 @@ export default function UserLayout() {
     if (Cookies.get("user_token")) dispatch(fetchUser());
   }, []);
 
-  const handleLogOut = (event) => {
+  const handleLogOut = () => {
     const headers = {
       headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
     };
     axios
       .get(`${import.meta.env.VITE_API_URL}/logout`, headers)
-      .then((result) => {
+      .then(() => {
         Cookies.remove("user_token");
         dispatch(resetUser());
         navTo("/signin");
@@ -38,6 +39,7 @@ export default function UserLayout() {
   return (
     <>
       <header>
+        <Logo className="logo" />
         <nav className="header-nav">
           <ul>
             <li>
@@ -49,16 +51,16 @@ export default function UserLayout() {
 
             {Cookies.get("user_token") ? (
               <>
-                <li className="profile-link">
+                <li>
                   <NavLink to={"/profile"}>Profile</NavLink>
                 </li>
                 <li>
-                  <NavLink onClick={handleLogOut}>SignOut</NavLink>
+                  <Link onClick={handleLogOut}>SignOut</Link>
                 </li>
               </>
             ) : (
               <>
-                <li className="signup-link">
+                <li>
                   <NavLink to={"/signup"}>SignUp</NavLink>
                 </li>
                 <li>
@@ -77,8 +79,8 @@ export default function UserLayout() {
       </header>
       <main
         className={
-          window.location.href == "http://localhost:5173/" ||
-          window.location.href == "http://localhost:5173/profile"
+          window.location.href == `${import.meta.env.VITE_FRONT_URL}/` ||
+          window.location.href == `${import.meta.env.VITE_FRONT_URL}/profile`
             ? "less-margin-main"
             : "more-margin-main"
         }

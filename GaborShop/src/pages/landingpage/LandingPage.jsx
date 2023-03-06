@@ -2,6 +2,7 @@ import "./landingPage.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle, faTag } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
 
 export default function LandingPage() {
   return (
@@ -37,17 +38,20 @@ export default function LandingPage() {
           <span className="exclamation-icon">
             <FontAwesomeIcon icon={faExclamationCircle} />
           </span>
-          This demo was made to demonstrate the skill of the creator in web
-          development!
+          This demo is for practice purposes.
         </p>
       </section>
       <section className="landing-button-container">
-        <button>
-          <Link to={"/signin"}>Sign In</Link>
-        </button>
-        <button>
-          <Link to={"/signup"}>Sign Up</Link>
-        </button>
+        {!Cookies.get("user_token") && (
+          <>
+            <button>
+              <Link to={"/signin"}>Sign In</Link>
+            </button>
+            <button>
+              <Link to={"/signup"}>Sign Up</Link>
+            </button>
+          </>
+        )}
         <button>
           <Link to={"/products"}>Check Products</Link>
         </button>

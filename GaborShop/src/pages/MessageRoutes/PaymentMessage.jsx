@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setMessage } from "../../components/Message/messageSlice";
+import { setMessage, setType } from "../../components/Message/messageSlice";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import indexed_db from "../../indexedDB/indexedDB";
@@ -20,27 +20,31 @@ export default function PaymentMessage() {
         const db = await indexed_db();
         const clearRequest = await clear(db);
         if (clearRequest === "Store is clear") {
-          dispatch(setMessage("Payment on progress!"));
+          dispatch(setMessage("Payment in progress!"));
           navTo("/shopping-cart");
         }
         break;
 
       case "TIMEOUT":
+        dispatch(setType("failed"));
         dispatch(setMessage("Payment failed due to timeout!"));
         navTo("/shopping-cart");
         break;
 
       case "FAIL":
+        dispatch(setType("failed"));
         dispatch(setMessage("Payment failed!"));
         navTo("/shopping-cart");
         break;
 
       case "CANCEL":
+        dispatch(setType("failed"));
         dispatch(setMessage("Payment process was cancelled!"));
         navTo("/shopping-cart");
         break;
 
       default:
+        dispatch(setType("failed"));
         dispatch(setMessage("Payment failed!"));
         navTo("/shopping-cart");
         break;

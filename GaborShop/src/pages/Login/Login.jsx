@@ -25,29 +25,30 @@ export default function Login() {
   const handleChange = (event) =>
     setData({ ...data, [event.target.name]: event.target.value });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setInputError({ errors: {} });
 
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/login`, { ...data })
-      .then((result) => {
-        Cookies.set("user_token", result.data.token);
-        dispatch(fetchUser());
-        navTo("/profile");
-      })
-      .catch((error) => {
-        if (error.response.data.errors) {
-          setInputError(error.response.data);
-        } else {
-          dispatch(setMessage(error.response.data.message));
-          dispatch(setType(error.response.data.type));
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/login`,
+        data
+      );
+      console.log(response);
+      Cookies.set("user_token", response.data);
+      dispatch(fetchUser());
+      navTo("/profile");
+    } catch (error) {
+      if (error.response.data.errors) {
+        setInputError(error.response.data);
+      } else {
+        dispatch(setMessage(error.response.data.message));
+        dispatch(setType(error.response.data.type));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,7 +64,7 @@ export default function Login() {
               type="email"
               onChange={handleChange}
             />
-            <ShowInputError status={inputError} inputName="name" />
+            <ShowInputError status={inputError} inputName="email" />
           </label>
           <label>
             Password

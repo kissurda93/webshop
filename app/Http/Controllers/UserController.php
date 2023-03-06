@@ -54,7 +54,7 @@ class UserController extends Controller
 
         $user = User::create($userData);
         $user->addresses()->create($addressData);
-        $url = route('account_activate', ['user' => $user->verification_token,]);
+        $url = route('account-activate', ['user' => $user->verification_token,]);
 
         Mail::to($user->email)->send(new VerificationMail($url, $user));
 
@@ -73,12 +73,12 @@ class UserController extends Controller
         User::find($user['id'])->tokens()->delete();
 
         if ($user->email_verified_at != null)
-            return redirect()->away(env("APP_FRONTEND_URL").'/activated');
+            return redirect()->away(config('app.front_url').'/activated');
         
         $user->email_verified_at = now();
         $user->save();
             
-        return redirect()->away(env("APP_FRONTEND_URL").'/activated');
+        return redirect()->away(config('app.front_url').'/activated');
     }
 
     public function login(LoginRequest $request) {
@@ -94,7 +94,7 @@ class UserController extends Controller
         
         
         $token = $request->user()->createToken('my_token')->plainTextToken;
-        return response(compact( 'token'));
+        return response($token);
     }
 
     public function logout(Request $request) {

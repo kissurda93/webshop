@@ -9,6 +9,7 @@
   color: var(--dark-purple);
   font-size: 1.3rem;
   padding: 0.5rem;
+  margin-bottom: 1rem;
   border-radius: 4px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
@@ -35,4 +36,18 @@
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   border-radius: 4px;
+}
+
+.admin-single-user p {
+  padding-block: 0.2rem;
+}
+
+@media (max-width: 650px) {
+  .admin-user-list > div {
+    font-size: 1.1rem;
+  }
+
+  .admin-single-user {
+    font-size: 1rem;
+  }
 }

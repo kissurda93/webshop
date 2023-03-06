@@ -52,6 +52,7 @@
   border-radius: 4px;
   background-color: var(--dark-purple);
   color: var(--light-green);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .address-buttons > button:hover {
@@ -90,4 +91,25 @@
   border-radius: 4px;
   background-color: var(--light-purple);
   color: var(--dark-purple);
+}
+
+.address-form input {
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  width: 330px;
+}
+
+@media (max-width: 600px) {
+  .address-container {
+    width: auto;
+    font-size: 1.2rem;
+  }
+
+  .addresses-section > h2 {
+    font-size: 2rem;
+  }
+
+  .addresses-section > button {
+    font-size: 1.2rem;
+  }
 }

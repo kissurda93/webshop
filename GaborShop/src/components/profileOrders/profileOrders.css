@@ -36,3 +36,19 @@
 .empty-user-orders {
   padding: 4rem 8rem;
 }
+
+@media (max-width: 600px) {
+  .user-orders-section > h2 {
+    font-size: 2rem;
+    padding-left: 1rem;
+  }
+
+  .user-order-container {
+    font-size: 1rem;
+  }
+
+  .empty-user-orders {
+    padding: 2rem 4rem;
+    font-size: 1rem;
+  }
+}

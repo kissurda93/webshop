@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { setMessage, setType } from "../Message/messageSlice";
 import { useDispatch } from "react-redux";
 import ShowInputError from "../Message/ShowInputError";
@@ -40,7 +39,7 @@ export default function ForgottenPassword({ closeModal }) {
         onClick={(event) => event.stopPropagation()}
       >
         <section className="user-form-section">
-          <h2>Did You Forget Your Password?</h2>
+          <h2>Type your email address </h2>
           <form className="user-form" onSubmit={handleSubmit}>
             <label>
               Email
@@ -52,7 +51,9 @@ export default function ForgottenPassword({ closeModal }) {
               />
               <ShowInputError status={inputError} inputName="email" />
             </label>
-            <button type="submit">Send Link To Email Address</button>
+            <button className="send-password-link" type="submit">
+              Send Link To Email Address
+            </button>
           </form>
         </section>
       </div>

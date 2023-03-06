@@ -7,11 +7,11 @@
   top: 0;
   left: 0;
   bottom: 0;
-  max-width: 300px;
   background-color: var(--dark-purple);
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  width: 300px;
 }
 
 .profile-section > aside > nav {
@@ -42,6 +42,10 @@
   align-items: center;
 }
 
+.user-data-in-profile > * {
+  animation: ease-in fadeIn 300ms;
+}
+
 .profile-form {
   display: flex;
   flex-direction: column;
@@ -53,6 +57,7 @@
   background-color: var(--dark-purple);
   color: var(--light-purple);
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
 
 .input-group {
@@ -74,8 +79,99 @@
 .button-group button {
   font-size: 1.4rem;
   padding: 0.3rem 1rem;
+  margin: 0.5rem 1rem;
   border: none;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: var(--light-purple);
   color: var(--dark-purple);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.button-group button:hover {
+  background-color: var(--green);
+}
+
+.active-profile-navlink {
+  color: var(--green) !important;
+}
+
+@media (max-width: 1200px) {
+  .profile-section {
+    flex-direction: column;
+  }
+
+  .profile-section > aside {
+    position: relative;
+    flex-direction: row;
+    padding-top: 0.5rem;
+    width: auto;
+  }
+
+  .profile-section > aside > nav > ul {
+    display: flex;
+  }
+
+  .profile-section > aside > .button-group {
+    margin: 0 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .profile-section > aside > nav > ul > li,
+  .profile-section > aside > .button-group > button {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .profile-section > aside > nav > ul {
+    flex-direction: column;
+  }
+
+  .profile-section > aside > nav > ul > li {
+    margin: 0.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-section > aside > .button-group {
+    flex-direction: column;
+  }
+
+  .profile-form {
+    padding: 0;
+  }
+
+  .profile-form > h2 {
+    margin: 0.5rem 1rem;
+  }
+
+  .profile-form > .input-group {
+    margin-inline: 1rem;
+  }
+
+  .input-group > label {
+    font-size: 1.2rem;
+  }
+
+  .input-group > label > input {
+    width: auto;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .profile-section > aside > nav > ul > li {
+    font-size: 1rem;
+  }
+
+  .profile-section > aside > .button-group > button {
+    font-size: 1rem;
+    padding-inline: 0.5rem;
+  }
+
+  .button-group > button {
+    font-size: 1.2rem;
+  }
 }

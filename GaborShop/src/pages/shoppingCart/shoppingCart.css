@@ -127,26 +127,50 @@
   border-radius: 4px;
 }
 
-.payment-form > button {
+.payment-instructions {
+  max-width: 400px;
+}
+
+.payment-instructions > p {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+input[type="image"] {
   align-self: center;
-  font-size: 1.4rem;
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 4px;
-  background-color: var(--green);
-  color: var(--dark-purple);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  width: 200px;
 }
 
 @media (max-width: 650px) {
-  .cart-product-container,
+  .cart-product-container {
+    font-size: 1rem;
+  }
+
+  .cart-product-container > img,
+  .cart-product-text {
+    margin-inline: auto;
+    margin-top: 1rem;
+  }
+
   .empty-container {
+    font-size: 1rem;
+  }
+
+  .total-price-container > p {
+    margin-left: 1rem;
+  }
+
+  .payment-instructions > p {
     font-size: 1rem;
   }
 }
 
-@media (max-width: 950px) {
-  .cart-product-container,
+@media (max-width: 750px) {
+  .cart-product-container {
+    font-size: 1.3rem;
+    flex-direction: column;
+  }
+
   .empty-container {
     font-size: 1.3rem;
   }

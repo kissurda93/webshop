@@ -44,22 +44,37 @@ export default function Profile() {
           <aside>
             <nav>
               <ul>
-                <li data-info="personal" onClick={handleShowUserInfo}>
+                <li
+                  data-info="personal"
+                  className={
+                    showUserInfos.personal ? "active-profile-navlink" : ""
+                  }
+                  onClick={handleShowUserInfo}
+                >
                   My Personal Infos
                 </li>
-                <li data-info="addresses" onClick={handleShowUserInfo}>
+                <li
+                  data-info="addresses"
+                  className={
+                    showUserInfos.addresses ? "active-profile-navlink" : ""
+                  }
+                  onClick={handleShowUserInfo}
+                >
                   My Addresses
                 </li>
-                <li data-info="orders" onClick={handleShowUserInfo}>
+                <li
+                  data-info="orders"
+                  className={
+                    showUserInfos.orders ? "active-profile-navlink" : ""
+                  }
+                  onClick={handleShowUserInfo}
+                >
                   My Orders
                 </li>
               </ul>
             </nav>
-            <div>
-              <button
-                className="update-password"
-                onClick={() => setOpenModal(true)}
-              >
+            <div className="button-group">
+              <button onClick={() => setOpenModal(true)}>
                 Change Password
               </button>
               <DeleteAccountBtn id={id} />
