@@ -1,62 +1,75 @@
-# Project Name
+# GaborShop
 
-This project is a web application that uses Laravel for the back-end REST API, React for the front-end single-page application (SPA), and MySQL as the database.
+This project is an e-commerce website that uses Laravel for the back-end REST API, React for the front-end single-page application (SPA), and MySQL as the database.
 
 ## Description
 
 The project is a fully functional web application that allows users to perform CRUD operations on a database of items. The application includes a user authentication system, allowing users to create an account, log in, and perform actions that require authentication.
 
-The back-end of the application is built using Laravel, a PHP framework for building web applications. The front-end of the application is built using React, a JavaScript library for building user interfaces. The application's data is stored in MySQL, a relational database management system.
+The back-end of the application is built using Laravel, a PHP framework for building web applications. The front-end of the application is built using React, a JavaScript library for building user interfaces, and Vite to bundle the assets and jsx. The application's data is stored in MySQL, a relational database management system.
 
 ## Prerequisites
 
 To run the application, you will need the following software installed:
 
-- [PHP](https://www.php.net/manual/en/install.php)
-- [Composer](https://getcomposer.org/)
-- [Node.js](https://nodejs.org/en/)
+- [PHP 8.0.2](https://www.php.net/manual/en/install.php)
+- [Composer 2.4.3](https://getcomposer.org/)
+- [Node.js 18.12.0](https://nodejs.org/en/)
+- [npm 8.19.2](https://www.npmjs.com/)
 - [MySQL](https://dev.mysql.com/downloads/)
 
 ## Installation
 
 1. Clone the project to your local machine:
 
-git clone https://github.com/<username>/<projectname>.git
+`git clone https://github.com/kissurda93/webshop.git`
 
 2. Install the back-end dependencies:
 
-cd backend
+```bash
+cd rootFolder
 composer install
+```
 
 3. Configure the database connection in the `.env` file:
 
+```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=<databasename>
 DB_USERNAME=<username>
 DB_PASSWORD=<password>
+```
 
 4. Run the database migrations:
 
-php artisan migrate
+`php artisan migrate`
 
 5. Seed the database:
 
-php artisan db:seed
+`php artisan db:seed`
 
-6. Install the front-end dependencies:
+6. Start the backend-localhost:
 
-cd ../frontend
+`php artisan serve`
+
+7. Install the front-end dependencies:
+
+```bash
+cd ../gaborshop
 npm install
+```
 
-7. Start the application:
+8. Start the frontend-localhost:
 
-npm start
+`npm run dev`
 
 ## Usage
 
-The web application allows users to perform CRUD operations on a database of items. The application is fully functional and can be used to create, read, update, and delete items.
+The migrated users password is "testuser". You can use a migrated user email and password to signing in or you can signup with your own data.
+
+The admin panel you can reach via "/admin-login" endpoint. The migrated admins password is "testadmin". You can use a migrated admin email and password to login.
 
 ## Development
 
