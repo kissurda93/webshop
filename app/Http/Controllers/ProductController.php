@@ -77,9 +77,9 @@ class ProductController extends Controller
             }
 
             $imageName = time() . '-' . $file->getClientOriginalName();
-            $file->move(storage_path('app/public'), $imageName);
+            $file->move(public_path('images'), $imageName);
 
-            $path = public_path('storage') . '/' .  $imageName;
+            $path = config('app.api_url') . "/images/" .  $imageName;
             array_push($urls, ['url' => $path]);
         }
 
@@ -103,6 +103,6 @@ class ProductController extends Controller
         $product['categories'] = $product->categories;
         $product['images'] = $product->images;
 
-        return response($product);
+        return response($product, 201);
     }
 }

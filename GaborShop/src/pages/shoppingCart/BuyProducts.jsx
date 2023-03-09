@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import SimplePayLogo from "../../assets/logo/simplepay.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../../components/spinners/Spinner";
 
 export default function BuyProducts() {
   const navTo = useNavigate();
@@ -54,7 +55,12 @@ export default function BuyProducts() {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
       );
-      window.location = response.data.url;
+      if (response.status === 422) {
+        dispatch(setMessage(response.data.message));
+      }
+      if (response.status === 200) {
+        window.location = response.data.url;
+      }
     } catch (error) {
       console.warn(error);
     } finally {
@@ -130,7 +136,11 @@ export default function BuyProducts() {
                 })}
               </select>
             </label>
-            <input type="image" disabled={loading} src={SimplePayLogo} />
+            {loading ? (
+              <Spinner white={true} />
+            ) : (
+              <input type="image" disabled={loading} src={SimplePayLogo} />
+            )}
           </form>
         </div>
       )}

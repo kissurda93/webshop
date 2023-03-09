@@ -75,7 +75,7 @@ export default function NewAddress() {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
       );
-      if (postRequest.status === 200) {
+      if (postRequest.status === 201) {
         dispatch(setNewAddress(postRequest.data[0]));
       }
     } catch (error) {

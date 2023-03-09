@@ -47,7 +47,7 @@ describe("Signup.jsx", () => {
     });
 
     await page.type('input[name="name"]', "Teszt Elek");
-    await page.type('input[name="email"]', "teszt@gmail.com");
+    await page.type('input[name="email"]', `teszt${Math.random()}@gmail.com`);
     await page.type('input[name="password"]', "1234");
     await page.type('input[name="password_confirmation"]', "1234");
     await page.select('select[name="country"]', "Hungary///99");

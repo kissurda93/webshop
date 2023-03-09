@@ -25,6 +25,11 @@
   border-color: var(--dark-purple) transparent transparent transparent;
 }
 
+.white-spinner {
+  border: 8px solid var(--light-purple) !important;
+  border-color: var(--light-purple) transparent transparent transparent !important;
+}
+
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
 }

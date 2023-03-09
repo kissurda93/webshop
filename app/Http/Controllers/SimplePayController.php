@@ -55,6 +55,11 @@ class SimplePayController extends Controller
 
         foreach($products as $product) {
             $newProduct = Product::find($product['product_id']);
+            
+            if($product['product_quantity'] > $newProduct['stock']) {
+                $productTitle = $newProduct['title'];
+                return response(['message' => "Not enough in stock ($productTitle)"], 422);
+            }
 
             $newProduct['quantity'] = $product['product_quantity'];
             $newProduct['price'] = $newProduct['price'] - $newProduct['price'] * ($newProduct['discountPercentage'] / 100);

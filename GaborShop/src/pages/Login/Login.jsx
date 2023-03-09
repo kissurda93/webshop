@@ -35,7 +35,6 @@ export default function Login() {
         `${import.meta.env.VITE_API_URL}/login`,
         data
       );
-      console.log(response);
       Cookies.set("user_token", response.data);
       dispatch(fetchUser());
       navTo("/profile");
@@ -43,8 +42,8 @@ export default function Login() {
       if (error.response.data.errors) {
         setInputError(error.response.data);
       } else {
+        dispatch(setType("failed"));
         dispatch(setMessage(error.response.data.message));
-        dispatch(setType(error.response.data.type));
       }
     } finally {
       setLoading(false);

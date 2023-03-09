@@ -4,31 +4,31 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "./productsAsync";
-import { PRODUCTS_URL } from "./productsAsync";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../../components/spinners/Spinner";
 import Paginater from "../../components/paginater/Paginater";
 import Categories from "../../components/categories/Categories";
 import Price from "../../components/price/Price";
+import { setCurrentPage } from "./productsSlice";
 
 export default function Products() {
   const dispatch = useDispatch();
   const navTo = useNavigate();
   const { status, productsList } = useSelector((state) => state.products);
-  const [link, setLink] = useState(PRODUCTS_URL);
+  const currentPage = useSelector((state) => state.products.currentPage);
   const [searchData, setSearchData] = useState({});
   const [searchCounter, setSearchCounter] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchProducts({ link, searchData }));
-  }, [link, searchCounter]);
+    dispatch(fetchProducts({ currentPage, searchData }));
+  }, [currentPage, searchCounter]);
 
   const toProductPage = (id) => navTo(`/product/${id}`);
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    setLink(`${import.meta.env.VITE_API_URL}/search-products`);
+    dispatch(setCurrentPage(`${import.meta.env.VITE_API_URL}/search-products`));
     setSearchCounter(searchCounter + 1);
   };
 
@@ -56,7 +56,7 @@ export default function Products() {
             </button>
           </div>
         </form>
-        <Categories setLink={setLink} />
+        <Categories />
       </section>
       <section className="products">
         {status === "loading" ? (
@@ -75,8 +75,8 @@ export default function Products() {
                     src={product.thumbnail}
                     alt="Image of the product"
                     loading="lazy"
-                    width={450}
-                    height={450}
+                    width={400}
+                    height={400}
                   />
                 </div>
                 <div className="product-info-container">
@@ -94,7 +94,7 @@ export default function Products() {
           })
         )}
       </section>
-      <Paginater setLink={setLink} />
+      <Paginater />
     </>
   );
 }

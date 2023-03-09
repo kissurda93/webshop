@@ -71,25 +71,32 @@ export default function SignUp() {
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setInputError({ errors: {} });
 
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/register`, { ...data })
-      .then((result) => {
-        Cookies.set("user_token", result.data.token);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/register`,
+        data
+      );
+      if (response.status === 201) {
+        Cookies.set("user_token", response.data.token);
         dispatch(fetchUser());
-        dispatch(setMessage(result.data.message));
+        dispatch(setMessage(response.data.message));
         navTo("/profile");
-      })
-      .catch((error) => {
+      }
+    } catch (error) {
+      if (error.response.data.errors) {
         setInputError(error.response.data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      } else {
+        dispatch(setType("failed"));
+        dispatch(setMessage(error.response.data.message));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

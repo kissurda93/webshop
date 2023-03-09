@@ -52,7 +52,7 @@ export default function NewProduct() {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         dispatch(newAdminProduct(response.data));
         dispatch(setMessage("Product created successfully!"));
         setShowForm(false);

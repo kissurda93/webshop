@@ -39,7 +39,7 @@ class AddressController extends Controller
         $user = User::find($validated['id']);
         $addressInDB = $user->addresses()->create($address);
 
-        return response([$addressInDB]);
+        return response([$addressInDB], 201);
     }
 
     public function setDefault(Request $request) {

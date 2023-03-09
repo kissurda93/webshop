@@ -66,7 +66,7 @@ class UserController extends Controller
         return response(
             ['message' => 'Verification Link Has Been Sent To Your Email Adress!',
             'token' => $token,
-            ]);
+            ], 201);
     }
 
     public function activate(User $user) {

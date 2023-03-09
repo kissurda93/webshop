@@ -57,7 +57,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
 Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
 
 // Admin related:
-Route::post('/register-admin', [AdminController::class, 'register']);
 Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);
 Route::middleware(['admin'])->group(function() {
   Route::get('/>>>admin-data<<<', [AdminController::class, 'getData']);

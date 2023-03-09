@@ -14,15 +14,6 @@ use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
-    public function register(Request $request) {
-        
-        Admin::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => $request['password'],
-        ]);
-    }
-
     public function login(LoginRequest $request) {
         try {
             $validated = $request->validated();

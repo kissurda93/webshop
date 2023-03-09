@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../pages/Products/productsSlice";
 import { useSelector } from "react-redux";
+import { setCurrentPage } from "../../pages/Products/productsSlice";
 
-export default function Categories({ setLink }) {
+export default function Categories() {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.products);
 
@@ -19,7 +20,7 @@ export default function Categories({ setLink }) {
   }, []);
 
   const requestCategory = (id) => {
-    setLink(`${import.meta.env.VITE_API_URL}/products/${id}`);
+    dispatch(setCurrentPage(`${import.meta.env.VITE_API_URL}/products/${id}`));
   };
 
   return (

@@ -6,6 +6,7 @@ const initialState = {
   status: "idle",
   error: null,
   pages: [],
+  currentPage: `${import.meta.env.VITE_API_URL}/products`,
   categories: [],
 };
 
@@ -16,6 +17,9 @@ export const productsSlice = createSlice({
     setCategories: (state, action) => {
       state.categories = action.payload;
     },
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -25,6 +29,10 @@ export const productsSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.productsList = action.payload.data;
         state.pages = action.payload.links;
+        const current = action.payload.links.find(
+          (link) => link.active === true
+        );
+        state.currentPage = current.url;
         state.status = "succeeded";
       })
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -34,6 +42,6 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { setCategories } = productsSlice.actions;
+export const { setCategories, setCurrentPage } = productsSlice.actions;
 
 export default productsSlice.reducer;

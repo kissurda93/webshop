@@ -1,5 +1,5 @@
 import "./header.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,11 +11,15 @@ import { resetUser } from "./userSlice";
 import { fetchCartProducts } from "../../pages/shoppingCart/fetchCartProducts";
 import { fetchUser } from "./fetchUser";
 import { ReactComponent as Logo } from "../../assets/logo/jglogo.svg";
+import CookiePolicy from "../../components/cookiePoliciy/CookiePoliciy";
 
 export default function UserLayout() {
   const cartQuantity = useSelector((state) => state.cartProducts.quantity);
   const dispatch = useDispatch();
   const navTo = useNavigate();
+  const [showPolicy, setShowPolicy] = useState(
+    Cookies.get("gaborshop_cookies_accepted") ? false : true
+  );
 
   useEffect(() => {
     dispatch(fetchCartProducts());
@@ -87,6 +91,7 @@ export default function UserLayout() {
       >
         <Outlet />
       </main>
+      {showPolicy && <CookiePolicy setShowPolicy={setShowPolicy} />}
     </>
   );
 }
