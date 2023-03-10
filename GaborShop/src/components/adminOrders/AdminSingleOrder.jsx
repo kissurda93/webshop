@@ -17,7 +17,7 @@ export default function AdminSingleOrder({ order, setShowOrder }) {
     try {
       if (order.delivery_status !== "Completed" && checked) {
         const response = await axios.patch(
-          `${import.meta.env.VITE_API_URL}/>>>update-order<<</`,
+          `${import.meta.env.VITE_API_URL}/>>>update-order<<<`,
           {
             id: order.id,
             delivery_status: "Completed",
