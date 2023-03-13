@@ -259,9 +259,9 @@ class SimplePayController extends Controller
             $products = json_decode($productsJSON);
 
             foreach($products as $product) {
-                $productInDb = Product::find($product['id']);
+                $productInDb = Product::find($product->id);
                 $stock = $productInDb['stock'];
-                $productInDb->update(['stock' => $stock - $product['quantity']]);
+                $productInDb->update(['stock' => $stock - $product->quantity]);
             }
 
             /**
