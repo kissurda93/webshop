@@ -25,7 +25,6 @@ class PaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
             'products' => ['required', new CartArrayCheckRule],
             'invoice' => 'required',
             'delivery' => 'required',

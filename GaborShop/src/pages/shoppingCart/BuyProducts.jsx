@@ -44,9 +44,8 @@ export default function BuyProducts() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/simplePay-request`,
+        `${import.meta.env.VITE_API_URL}/simplePay-request/${id}`,
         {
-          id,
           products,
           invoice: invoice.current.value,
           delivery: delivery.current.value,

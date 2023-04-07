@@ -52,7 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::post('/new-address', [AddressController::class, 'newAddress']);
   Route::patch('/setDefaultAddress', [AddressController::class, 'setDefault']);
   Route::delete('/delete-address/{id}', [AddressController::class, 'deleteAddress']);
-  Route::post('/simplePay-request', [SimplePayController::class, 'start']);
+  Route::post('/simplePay-request/{user}', [SimplePayController::class, 'start']);
 });
 
 // IPN receiver endpoint to SimplePay:
