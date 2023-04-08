@@ -4,8 +4,9 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 use AmrShawky\LaravelCurrency\Facade\Currency;
+use App\Interfaces\CurrencyConverter;
 
-class CurrencyConverter
+class AmrShawkyConverter implements CurrencyConverter
 {
   public function convert(Collection $products, int $totalPrice): array
   {

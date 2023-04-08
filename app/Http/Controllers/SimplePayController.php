@@ -7,7 +7,7 @@ use App\Http\Requests\PaymentRequest;
 use App\Services\SimplePayService;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\PaymentException;
-use App\Services\CurrencyConverter;
+use App\Services\AmrShawkyConverter;
 
 class SimplePayController extends Controller
 {
@@ -15,24 +15,23 @@ class SimplePayController extends Controller
     {
         try {
             $validated = $request->validated();
-            $simplePayService->prepareUser($user, $validated);
-            $simplePayService->prepareProducts($validated['products']);
+
+            $converter = new AmrShawkyConverter();
+
+            $paymentUrl = $simplePayService
+            ->prepareData($user, $validated)
+            ->storeOrder($user)
+            ->convert($converter)
+            ->populateTransaction()
+            ->runTransaction();
+
+            return response($paymentUrl);
         } catch(ValidationException $e) {
             return response($e->errors());
         } catch(PaymentException $e) {
             return response($e->message(), $e->responseCode());
         }
-        
-        $simplePayService->storeOrder($user);
 
-        $converter = new CurrencyConverter();
-        $simplePayService->convert($converter);
-
-        $simplePayService->populateTransaction();
-
-        $paymentUrl = $simplePayService->runTransaction();
-
-        return response($paymentUrl);
     }
 
     public function ipn(SimplePayService $simplePayService)

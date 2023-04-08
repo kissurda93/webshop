@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeAddress } from "../../layouts/UserLayout/userSlice";
+import { setMessage } from "../Message/messageSlice";
 
 export default function DeleteAddress({ id }) {
   const dispatch = useDispatch();
@@ -17,7 +18,10 @@ export default function DeleteAddress({ id }) {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
       );
-      if (deleteRequest.status === 200) dispatch(removeAddress(id));
+      if (deleteRequest.status === 200) {
+        dispatch(removeAddress(id));
+        setMessage(response.data.message);
+      }
     } catch (error) {
       console.warn(error);
     } finally {

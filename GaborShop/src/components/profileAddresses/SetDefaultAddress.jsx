@@ -12,14 +12,16 @@ export default function SetDefaultAddress({ id }) {
   const setToDefault = async () => {
     setLoading(true);
     try {
-      const patchRequest = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/setDefaultAddress`,
-        { user_id, id },
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/setDefaultAddress/${user_id}/${id}`,
+        {},
         {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
       );
-      dispatch(setDefaultAddress(id));
+      if (response.status === 200) {
+        dispatch(setDefaultAddress(response.data.defaultAddress.id));
+      }
     } catch (error) {
       console.warn(error);
     } finally {

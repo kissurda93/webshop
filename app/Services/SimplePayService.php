@@ -9,6 +9,7 @@ use App\Exceptions\PaymentException;
 use App\Models\Address;
 use App\Services\SimplePayV21\SimplePayStart;
 use App\Services\SimplePayV21\SimplePayIpn;
+use App\Interfaces\CurrencyConverter;
 
 class SimplePayService
 {
@@ -25,7 +26,7 @@ class SimplePayService
     $this->trxIPN->addConfig(config('simplePay'));
   }
 
-  public function populateTransaction()
+  public function populateTransaction(): object
   {
     extract($this->dataToTrx);
 
@@ -124,6 +125,8 @@ class SimplePayService
     // link: link to payment page
     //-----------------------------------------------------------------------------------------
     $this->trx->formDetails['element'] = 'button';
+
+    return $this;
   }
 
   public function runTransaction(): array
@@ -177,43 +180,15 @@ class SimplePayService
     }
   }
 
-  public function prepareUser(User $user, array $request)
+  public function prepareData(User $user, array $request): object
   {
-    $invoiceAddress = $user->addresses()->find($request['invoice']);
-    $this->dataToTrx['invoiceAddress'] = $this->validateAddress($invoiceAddress);
+    $this->prepareUser($user, $request);
+    $this->prepareProducts($request['products']);
 
-    $deliveryAddress = $user->addresses()->find($request['delivery']);
-    $this->dataToTrx['deliveryAddress'] = $this->validateAddress($deliveryAddress);
-
-    $this->dataToTrx['user'] = $user;
+    return $this;
   }
 
-  public function prepareProducts(array $products)
-  {
-    $productsInDB = collect();
-
-    foreach($products as $product) {
-      $newProduct = Product::find($product['product_id']);
-      
-      if($product['product_quantity'] > $newProduct['stock']) {
-        $productTitle = $newProduct['title'];
-        throw new PaymentException(
-        "Not enough in stock ($productTitle)", 422);
-      }
-
-      $newProduct['quantity'] = $product['product_quantity'];
-      $newProduct['price'] = $newProduct['price'] - $newProduct['price'] * ($newProduct['discountPercentage'] / 100);
-      
-      $productsInDB->push($newProduct);
-    }
-    
-    $totalPrice = $productsInDB->reduce(fn ($total, $product) => $total + $product['price'] * $product['quantity']);
-    
-    $this->dataToTrx['products'] = $productsInDB;    
-    $this->dataToTrx['totalPrice'] = $totalPrice;  
-  }
-  
-  public function storeOrder(User $user)
+  public function storeOrder(User $user): object
   {
     $orderRef = str_replace(array('.', ':', '/'), "", @$_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
 
@@ -229,14 +204,18 @@ class SimplePayService
       'delivery_status' => 'Not Started',
       'order_ref' => $orderRef,
     ]);
+
+    return $this;
   }
 
-  public function convert(CurrencyConverter $converter)
+  public function convert(CurrencyConverter $converter): object
   {
     list($products, $totalPrice) = $converter->convert($this->dataToTrx['products'], $this->dataToTrx['totalPrice']);
 
     $this->dataToTrx['products'] = $products;
     $this->dataToTrx['totalPrice'] = $totalPrice;
+
+    return $this;
   }
 
   public function setIpnOnOrder(string $orderRef, string $input_json): Order
@@ -277,5 +256,41 @@ class SimplePayService
     }
   
     return $validatedAddress;
+  }
+
+  private function prepareUser(User $user, array $request)
+  {
+    $invoiceAddress = $user->addresses()->find($request['invoice']);
+    $this->dataToTrx['invoiceAddress'] = $this->validateAddress($invoiceAddress);
+
+    $deliveryAddress = $user->addresses()->find($request['delivery']);
+    $this->dataToTrx['deliveryAddress'] = $this->validateAddress($deliveryAddress);
+
+    $this->dataToTrx['user'] = $user;
+  }
+
+  private function prepareProducts(array $products)
+  {
+    $productsInDB = collect();
+
+    foreach($products as $product) {
+      $newProduct = Product::find($product['product_id']);
+      
+      if($product['product_quantity'] > $newProduct['stock']) {
+        $productTitle = $newProduct['title'];
+        throw new PaymentException(
+        "Not enough in stock ($productTitle)", 422);
+      }
+
+      $newProduct['quantity'] = $product['product_quantity'];
+      $newProduct['price'] = $newProduct['price'] - $newProduct['price'] * ($newProduct['discountPercentage'] / 100);
+      
+      $productsInDB->push($newProduct);
+    }
+    
+    $totalPrice = $productsInDB->reduce(fn ($total, $product) => $total + $product['price'] * $product['quantity']);
+    
+    $this->dataToTrx['products'] = $productsInDB;    
+    $this->dataToTrx['totalPrice'] = $totalPrice;  
   }
 }

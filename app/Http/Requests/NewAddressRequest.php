@@ -27,7 +27,6 @@ class NewAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
             'country' => ['required', 'string', new CountryCheckRule],
             'state' => [new StateCheckRule],
             'city' => [new CityCheckRule],

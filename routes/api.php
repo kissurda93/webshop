@@ -49,9 +49,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::patch('/user_update', [UserController::class, 'update']);
   Route::delete('/user_delete/{id}', [UserController::class, 'destroy']);
   Route::patch('/password_update', [UserController::class, 'updatePassword']);
-  Route::post('/new-address', [AddressController::class, 'newAddress']);
-  Route::patch('/setDefaultAddress', [AddressController::class, 'setDefault']);
-  Route::delete('/delete-address/{id}', [AddressController::class, 'deleteAddress']);
+  Route::post('/new-address/{user}', [AddressController::class, 'newAddress']);
+  Route::patch('/setDefaultAddress/{user}/{address}', [AddressController::class, 'setDefault']);
+  Route::delete('/delete-address/{address}', [AddressController::class, 'deleteAddress']);
   Route::post('/simplePay-request/{user}', [SimplePayController::class, 'start']);
 });
 
