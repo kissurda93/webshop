@@ -82,8 +82,10 @@ select:focus {
 }
 
 .message {
-  position: relative;
+  position: fixed;
   top: 70px;
+  left: 50%;
+  transform: translate(-50%, 0);
   z-index: 999999999;
   font-size: 1.4rem;
   padding: 1rem;

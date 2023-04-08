@@ -20,7 +20,7 @@ export default function SetDefaultAddress({ id }) {
         }
       );
       if (response.status === 200) {
-        dispatch(setDefaultAddress(response.data.defaultAddress.id));
+        dispatch(setDefaultAddress(response.data.id));
       }
     } catch (error) {
       console.warn(error);

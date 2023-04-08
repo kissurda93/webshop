@@ -17,11 +17,8 @@ export default function AdminSingleOrder({ order, setShowOrder }) {
     try {
       if (order.delivery_status !== "Completed" && checked) {
         const response = await axios.patch(
-          `${import.meta.env.VITE_API_URL}/>>>update-order<<<`,
-          {
-            id: order.id,
-            delivery_status: "Completed",
-          },
+          `${import.meta.env.VITE_API_URL}/>>>update-order<<</${order.id}`,
+          {},
           {
             headers: {
               adminToken: Cookies.get("admin_token"),
@@ -29,8 +26,8 @@ export default function AdminSingleOrder({ order, setShowOrder }) {
           }
         );
         if (response.status === 200) {
+          dispatch(setMessage(response.data));
           dispatch(updateOrderDeliveryStatus(order.id));
-          dispatch(setMessage("Order updated successfully!"));
           setShowOrder(false);
         }
       } else {

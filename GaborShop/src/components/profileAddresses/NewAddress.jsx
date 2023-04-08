@@ -68,15 +68,15 @@ export default function NewAddress() {
     e.preventDefault();
     setLoading(true);
     try {
-      const postRequest = await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/new-address/${id}`,
         { ...data },
         {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
       );
-      if (postRequest.status === 201) {
-        dispatch(setNewAddress(postRequest.data.newAddress));
+      if (response.status === 201) {
+        dispatch(setNewAddress(response.data));
       }
     } catch (error) {
       console.warn(error);

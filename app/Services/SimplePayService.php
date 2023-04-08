@@ -16,6 +16,7 @@ class SimplePayService
   private $trx;
   private $trxIPN;
   private $dataToTrx = [];
+  private $user;
 
   public function __construct()
   {
@@ -129,7 +130,7 @@ class SimplePayService
     return $this;
   }
 
-  public function runTransaction(): array
+  public function runTransaction(): string
   {
     //create transaction in SimplePay system
     //-----------------------------------------------------------------------------------------
@@ -143,7 +144,7 @@ class SimplePayService
 
     //return link to payment form
     //-----------------------------------------------------------------------------------------
-    return  ['url' => $this->trx->returnData['paymentUrl']];
+    return  $this->trx->returnData['paymentUrl'];
   }
 
   public function receiveIpn(): array
@@ -180,22 +181,23 @@ class SimplePayService
     }
   }
 
-  public function prepareData(User $user, array $request): object
+  public function collectData(User $user, array $request): object
   {
-    $this->prepareUser($user, $request);
-    $this->prepareProducts($request['products']);
+    $this->user = $user;
+    $this->processAddresses($request['invoice'], $request['delivery']);
+    $this->processProducts($request['products']);
 
     return $this;
   }
 
-  public function storeOrder(User $user): object
+  public function storeOrder(): object
   {
     $orderRef = str_replace(array('.', ':', '/'), "", @$_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
 
     $this->dataToTrx['orderRef'] = $orderRef;
 
-    $user->orders()->create([
-      'user_data' => json_encode($user),
+    $this->user->orders()->create([
+      'user_data' => json_encode($this->user),
       'products_data' => json_encode($this->dataToTrx['products']),
       'total_price' => $this->dataToTrx['totalPrice'],
       'invoice_address' => json_encode($this->dataToTrx['invoiceAddress']),
@@ -258,18 +260,18 @@ class SimplePayService
     return $validatedAddress;
   }
 
-  private function prepareUser(User $user, array $request)
+  private function processAddresses(string $invoice, string $delivery)
   {
-    $invoiceAddress = $user->addresses()->find($request['invoice']);
+    $invoiceAddress = $this->user->addresses()->find($invoice);
     $this->dataToTrx['invoiceAddress'] = $this->validateAddress($invoiceAddress);
 
-    $deliveryAddress = $user->addresses()->find($request['delivery']);
+    $deliveryAddress = $this->user->addresses()->find($delivery);
     $this->dataToTrx['deliveryAddress'] = $this->validateAddress($deliveryAddress);
 
-    $this->dataToTrx['user'] = $user;
+    $this->dataToTrx['user'] = $this->user;
   }
 
-  private function prepareProducts(array $products)
+  private function processProducts(array $products)
   {
     $productsInDB = collect();
 

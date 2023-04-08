@@ -62,7 +62,7 @@ Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
 Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);
 Route::middleware(['admin'])->group(function() {
   Route::get('/>>>admin-data<<<', [AdminController::class, 'getData']);
-  Route::patch('/>>>update-order<<<', [AdminController::class, 'updateOrder']);
+  Route::patch('/>>>update-order<<</{order}', [AdminController::class, 'updateOrder']);
   Route::patch('/>>>update-product<<<', [ProductController::class, 'updateProduct']);
   Route::delete('/>>>delete-product<<</{id}', [ProductController::class, 'deleteProduct']);
   Route::post('/>>>new-product<<<', [ProductController::class, 'createProduct']);

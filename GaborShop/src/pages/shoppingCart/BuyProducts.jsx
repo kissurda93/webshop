@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { setMessage } from "../../components/Message/messageSlice";
+import { setMessage, setType } from "../../components/Message/messageSlice";
 import axios from "axios";
 import Cookies from "js-cookie";
 import SimplePayLogo from "../../assets/logo/simplepay.png";
@@ -54,14 +54,16 @@ export default function BuyProducts() {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
       );
-      if (response.status === 422) {
-        dispatch(setMessage(response.data.message));
-      }
+
       if (response.status === 200) {
-        window.location = response.data.url;
+        window.location = response.data;
       }
     } catch (error) {
       console.warn(error);
+      if (error.response.status === 422) {
+        dispatch(setType("failed"));
+        dispatch(setMessage(response.data));
+      }
     } finally {
       setLoading(false);
       setShowModal(false);

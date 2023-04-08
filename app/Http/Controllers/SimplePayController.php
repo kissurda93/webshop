@@ -19,8 +19,8 @@ class SimplePayController extends Controller
             $converter = new AmrShawkyConverter();
 
             $paymentUrl = $simplePayService
-            ->prepareData($user, $validated)
-            ->storeOrder($user)
+            ->collectData($user, $validated)
+            ->storeOrder()
             ->convert($converter)
             ->populateTransaction()
             ->runTransaction();
@@ -29,7 +29,7 @@ class SimplePayController extends Controller
         } catch(ValidationException $e) {
             return response($e->errors());
         } catch(PaymentException $e) {
-            return response($e->message(), $e->responseCode());
+            return response($e->getMessage(), $e->getCode());
         }
 
     }

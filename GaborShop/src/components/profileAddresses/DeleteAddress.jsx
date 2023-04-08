@@ -20,7 +20,7 @@ export default function DeleteAddress({ id }) {
       );
       if (deleteRequest.status === 200) {
         dispatch(removeAddress(id));
-        setMessage(response.data.message);
+        setMessage(response.data);
       }
     } catch (error) {
       console.warn(error);

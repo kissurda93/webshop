@@ -6,7 +6,6 @@ use App\Http\Requests\NewAddressRequest;
 use App\Models\Address;
 use App\Models\User;
 use App\Services\AddressService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\AddressException;
@@ -41,23 +40,24 @@ class AddressController extends Controller
 
         $address = $addressService->newAddress($validated, $user);
 
-        return response(['newAddress' => $address], 201);
+        return response($address, 201);
     }
 
     public function setDefault(User $user, Address $address, AddressService $addressService)
     {
         $address = $addressService->changeDefault($user, $address);
         
-        return response(['defaultAddress' => $address]);
+        return response($address);
     }
 
-    public function deleteAddress(Address $address, AddressService $addressService) {
+    public function deleteAddress(Address $address, AddressService $addressService)
+    {
         try{
             $message = $addressService->deleteAddress($address);
         } catch(AddressException $e) {
-            return response($e->message(), $e->responseCode());
+            return response($e->getMessage(), $e->getCode());
         }
 
-        return response(['message' => $message]);
+        return response($message);
     }
 }

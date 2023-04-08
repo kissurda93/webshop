@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class AddressException extends Exception
+class LoginException extends Exception
 {
-   
+    
 }

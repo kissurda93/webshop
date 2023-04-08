@@ -1,41 +1,58 @@
 import axios from "axios";
 import "./categories.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../pages/Products/productsSlice";
 import { useSelector } from "react-redux";
 import { setCurrentPage } from "../../pages/Products/productsSlice";
+import Spinner from "../spinners/Spinner";
 
 export default function Categories() {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.products);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/categories`)
-      .then((response) => {
-        dispatch(setCategories(response.data.categories));
-      })
-      .catch((error) => console.log(error));
+    getAllCategory();
   }, []);
 
-  const requestCategory = (id) => {
+  const getAllCategory = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/categories`
+      );
+      if (response.status === 200) {
+        dispatch(setCategories(response.data));
+      }
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getCategory = (id) => {
     dispatch(setCurrentPage(`${import.meta.env.VITE_API_URL}/products/${id}`));
   };
 
   return (
     <ul className="categories">
-      {categories.map((category) => {
-        return (
-          <li
-            key={category.id}
-            className="category"
-            onClick={() => requestCategory(category.id)}
-          >
-            {category.name.toUpperCase()}
-          </li>
-        );
-      })}
+      {loading ? (
+        <Spinner />
+      ) : (
+        categories.map((category) => {
+          return (
+            <li
+              key={category.id}
+              className="category"
+              onClick={() => getCategory(category.id)}
+            >
+              {category.name.toUpperCase()}
+            </li>
+          );
+        })
+      )}
     </ul>
   );
 }
