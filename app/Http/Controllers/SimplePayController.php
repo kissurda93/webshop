@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\PaymentRequest;
+use Illuminate\Http\Response;
 use App\Services\SimplePayService;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\PaymentException;
 use App\Services\AmrShawkyConverter;
+use App\Http\Requests\PaymentRequest;
+use Illuminate\Validation\ValidationException;
 
 class SimplePayController extends Controller
 {
-    public function start(PaymentRequest $request, User $user, SimplePayService $simplePayService)
+    public function start(PaymentRequest $request, User $user, SimplePayService $simplePayService): Response
     {
         try {
             $validated = $request->validated();
@@ -31,7 +32,6 @@ class SimplePayController extends Controller
         } catch(PaymentException $e) {
             return response($e->getMessage(), $e->getCode());
         }
-
     }
 
     public function ipn(SimplePayService $simplePayService)

@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NewProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Services\ProductService;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
-    public function index(Category $category, ProductService $productService)
+    public function index(Category $category, ProductService $productService): Response
     {   
         if(isset($category->id)) {
             $data = $category->products()->paginate(9);
@@ -28,7 +29,7 @@ class ProductController extends Controller
         return response($data);
     }
 
-    public function search(Request $request)
+    public function search(Request $request): Response
     {
         $data = Product::where('title', 'LIKE', '%'.$request['search'].'%')
         ->orWhere('description', 'LIKE', '%'.$request['search'].'%')
@@ -37,7 +38,7 @@ class ProductController extends Controller
         return response($data);
     }
 
-    public function show(Product $product)
+    public function show(Product $product): Response
     {
         $data = $product;
         $data['images'] = $product->images;
@@ -45,7 +46,7 @@ class ProductController extends Controller
         return response($data);
     }
 
-    public function updateProduct(ProductUpdateRequest $request, Product $product, ProductService $productService)
+    public function updateProduct(ProductUpdateRequest $request, Product $product, ProductService $productService): Response
     {
         try {
             $validated = $request->validated();
@@ -58,62 +59,24 @@ class ProductController extends Controller
         return response($message);
     }
 
-    public function deleteProduct(Product $product)
+    public function deleteProduct(Product $product): Response
     {
         $product->delete();
 
         return response('Product deleted successfully!');
     }
 
-    public function createProduct(NewProductRequest $request, ProductService $productService) {
+    public function createProduct(NewProductRequest $request, ProductService $productService): Response
+    {
         try {
             $validated = $request->validated();
         } catch(ValidationException $e) {
             return response($e->errors());
         }
 
-        $files = $request->file();
-        if(count($files) == 0) {
-            return response(['message' => 'Upload at least one image!'], 404);
-        }
-
-        $whiteList = ['jpeg', 'jpg', 'png'];
-        $urls = [];
-        foreach ($files as $file) {
-            if(!in_array($file->guessExtension(), $whiteList)) {
-                return response(['message' => 'File extension not supported!'], 406);
-            }
-            if($file->getSize() > 5242880) {
-                return response(['message' => 'The file size exceeded the allowed 5mb'], 406);
-            }
-
-            $imageName = time() . '-' . $file->getClientOriginalName();
-            $file->move(public_path('images'), $imageName);
-
-            $path = config('app.api_url') . "/images/" .  $imageName;
-            array_push($urls, ['url' => $path]);
-        }
-
-        $product = Product::create([
-            'title' => $validated['title'],
-            'brand' => $validated['brand'],
-            'price' => $validated['price'],
-            'stock' => $validated['stock'],
-            'description' => $validated['description'],
-            'thumbnail' =>$urls[0]['url'],
-        ]);
-
-        $category = Category::updateOrCreate([
-            'name' => $validated['category'],
-        ]);
-
-        $category->products()->attach($product);
-
-        $product->images()->createMany($urls);
-
-        $product['categories'] = $product->categories;
-        $product['images'] = $product->images;
-
-        return response($product, 201);
+        $product = $productService->createProduct($validated);
+        $message = "Product created successfully!";
+        
+        return response(compact('product', 'message'), 201);
     }
 }

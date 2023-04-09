@@ -35,4 +35,42 @@ class ProductService
 
     return "Product updated successfully!";
   }
+
+  public function createProduct(array $request): Product
+  {
+    $urls = $this->savePhotos($request['images']);
+
+    $request['thumbnail'] = $urls[0]['url'];
+
+    $product = Product::create($request);
+
+    $category = Category::updateOrCreate([
+        'name' => $request['category'],
+    ]);
+
+    $category->products()->attach($product);
+
+    $product->images()->createMany($urls);
+
+    $product['categories'] = $product->categories;
+    $product['images'] = $product->images;
+
+    return $product;
+  }
+
+  private function savePhotos(array $images): array
+  {
+    $urls = [];
+
+    foreach ($images as $image) {
+      $imageName = time() . '-' . $image->getClientOriginalName();
+      $image->move(public_path('images'), $imageName);
+
+      $path = config('app.api_url') . "/images/" .  $imageName;
+      array_push($urls, ['url' => $path]);
+    }
+
+    return $urls;
+  }
+
 }

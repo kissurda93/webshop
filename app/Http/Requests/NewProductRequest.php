@@ -30,6 +30,8 @@ class NewProductRequest extends FormRequest
             'stock' => 'required|string',
             'description' => 'required|string',
             'category' => 'required|string',
+            'images' => 'required',
+            'images.*' => 'file|mimes:png,jpg,jpeg|max:5242880',
         ];
     }
 }

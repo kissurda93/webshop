@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\LoginException;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Services\AdminService;
+use App\Exceptions\LoginException;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Validation\ValidationException;
-use App\Services\AdminService;
 
 class AdminController extends Controller
 {
-    public function login(LoginRequest $request, AdminService $adminService)
+    public function login(LoginRequest $request, AdminService $adminService): Response
     {
         try {
             $validated = $request->validated();
@@ -29,7 +30,7 @@ class AdminController extends Controller
         return response($token);
     }
 
-    public function getData(Request $request)
+    public function getData(Request $request): Response
     {
         $products = Product::with(['categories', 'images'])->get();
         $orders = Order::all();
@@ -38,7 +39,7 @@ class AdminController extends Controller
         return response(compact('products', 'orders', 'users'));
     }
 
-    public function updateOrder(Order $order)
+    public function updateOrder(Order $order): Response
     {   
         $order->update([
             'delivery_status' => "Completed",

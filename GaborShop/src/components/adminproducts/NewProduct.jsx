@@ -39,7 +39,7 @@ export default function NewProduct() {
       }
 
       for (let i = 0; i < images.length; i++) {
-        formData.append(`image${i}`, images[i], `${images[i].name}`);
+        formData.append(`images[${i}]`, images[i], `${images[i].name}`);
       }
 
       const response = await axios.post(
@@ -53,8 +53,8 @@ export default function NewProduct() {
       );
 
       if (response.status === 201) {
-        dispatch(newAdminProduct(response.data));
-        dispatch(setMessage("Product created successfully!"));
+        dispatch(newAdminProduct(response.data.product));
+        dispatch(setMessage(response.data.message));
         setShowForm(false);
       }
     } catch (error) {
@@ -138,7 +138,7 @@ export default function NewProduct() {
                 type="file"
                 name="images"
                 multiple
-                accept="image/png, image/jpeg"
+                accept="image/png, image/jpeg, image/jpg,"
                 onChange={handleFileChange}
                 required
               />

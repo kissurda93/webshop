@@ -16,19 +16,24 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Requests\ForgottenPasswordRequest;
 use App\Http\Requests\PasswordResetRequest;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller
 {
 
-    public function getUserData(Request $request) {
+    public function getUserData(Request $request): Response
+    {
         $user = $request->user();
         $addresses = $user->addresses()->get();
         $orders =$user->orders()->get();
+
         return response(compact('user', 'addresses', 'orders'));
     }
 
-    public function register(RegisterRequest $request) {
+    public function register(RegisterRequest $request): Response
+    {
         try {
             $validated = $request->validated();
         }
@@ -69,8 +74,9 @@ class UserController extends Controller
             ], 201);
     }
 
-    public function activate(User $user) {
-        User::find($user['id'])->tokens()->delete();
+    public function activate(User $user): RedirectResponse
+    {
+        $user->tokens()->delete();
 
         if ($user->email_verified_at != null)
             return redirect()->away(config('app.front_url').'/activated');
@@ -81,7 +87,8 @@ class UserController extends Controller
         return redirect()->away(config('app.front_url').'/activated');
     }
 
-    public function login(LoginRequest $request) {
+    public function login(LoginRequest $request): Response
+    {
         try {
             $validated = $request->validated();
         }
@@ -92,12 +99,13 @@ class UserController extends Controller
         if(!Auth::attempt($validated)) 
             return response(['message' => 'Sign In Failed!', 'type' => 'failed'], 422);
         
-        
         $token = $request->user()->createToken('my_token')->plainTextToken;
+        
         return response($token);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request): Response
+    {
         $request->user()->currentAccessToken()->delete();
         return response([]);
     }
@@ -126,11 +134,11 @@ class UserController extends Controller
         return response([]);
     }
 
-    public function destroy($id) {
-        if(!User::find($id)->delete())
-            return response(['message' => 'Delete Failed!', 'type' => 'failed'], 422);
+    public function destroy(User $user): Response
+    {
+        $user->delete();
 
-        return response([]);
+        return response("Account deleted!");
     }
 
     public function updatePassword(PasswordUpdateRequest $request) {
@@ -165,7 +173,8 @@ class UserController extends Controller
         return response(['message' => 'Link Has Been Sent To Your Email Address!']);
     }
 
-    public function toNewPasswordForm($token) {
+    public function toNewPasswordForm($token): RedirectResponse
+    {
         return redirect()->away(env("APP_FRONTEND_URL")."/reset-password/".$token);
     }
 

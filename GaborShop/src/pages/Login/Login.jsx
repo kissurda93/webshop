@@ -35,6 +35,7 @@ export default function Login() {
         `${import.meta.env.VITE_API_URL}/login`,
         data
       );
+
       Cookies.set("user_token", response.data);
       dispatch(fetchUser());
       navTo("/profile");
