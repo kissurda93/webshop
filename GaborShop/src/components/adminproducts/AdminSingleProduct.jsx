@@ -8,17 +8,14 @@ import {
   updateAdminProductData,
   deleteAdminProduct,
 } from "../../layouts/AdminLayout/adminDataSlice";
+import { setMessage } from "../Message/messageSlice";
 
 export default function AdminSingleProduct({
   singleProduct,
   singleProductImages,
   closeProduct,
 }) {
-  const [data, setData] = useState({
-    id: singleProduct.id,
-    stock: singleProduct.stock,
-    discount: singleProduct.discountPercentage,
-  });
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -29,9 +26,13 @@ export default function AdminSingleProduct({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (Object.keys(data).length === 0) return;
+
     try {
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/>>>update-product<<<`,
+        `${import.meta.env.VITE_API_URL}/>>>update-product<<</${
+          singleProduct.id
+        }`,
         data,
         {
           headers: {
@@ -39,7 +40,10 @@ export default function AdminSingleProduct({
           },
         }
       );
-      if (response.status === 200) dispatch(updateAdminProductData(data));
+      if (response.status === 200) {
+        dispatch(updateAdminProductData({ id: singleProduct.id, ...data }));
+        dispatch(setMessage(response.data));
+      }
     } catch (error) {
       console.warn(error);
     } finally {
@@ -63,6 +67,7 @@ export default function AdminSingleProduct({
         );
         if (response.status === 200) {
           dispatch(deleteAdminProduct(singleProduct.id));
+          dispatch(setMessage(response.data));
           closeProduct();
         }
       } catch (error) {
@@ -95,7 +100,7 @@ export default function AdminSingleProduct({
               name="stock"
               type="number"
               min="0"
-              defaultValue={data.stock}
+              defaultValue={singleProduct.stock}
               onChange={handleChange}
             />
           </label>
@@ -106,18 +111,26 @@ export default function AdminSingleProduct({
               type="number"
               min="0"
               step="0.01"
-              defaultValue={data.discount ? data.discount : "0.00"}
+              defaultValue={
+                singleProduct.discountPercentage
+                  ? singleProduct.discountPercentage
+                  : "0.00"
+              }
               onChange={handleChange}
             />
           </label>
 
           <Price
             price={singleProduct.price}
-            discountPercentage={data.discount ? data.discount : "0.00"}
+            discountPercentage={
+              data.discount ? data.discount : singleProduct.discountPercentage
+            }
           />
-          <button type="submit" disabled={loading}>
-            {loading ? "..." : "Save"}
-          </button>
+          {Object.keys(data).length !== 0 && (
+            <button type="submit" disabled={loading}>
+              {loading ? "..." : "Save"}
+            </button>
+          )}
           <button disabled={loading} onClick={handleDelete}>
             Delete Product
           </button>

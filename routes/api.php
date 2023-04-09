@@ -30,7 +30,7 @@ Route::get('/cities/{id}', [AddressController::class, 'getCities']);
 
 // Product and category:
 Route::get('/products/{category?}', [ProductController::class, 'index']);
-Route::get('/product/{id}', [ProductController::class, 'show']);
+Route::get('/product/{product}', [ProductController::class, 'show']);
 Route::post('/search-products', [ProductController::class, 'search']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -63,7 +63,7 @@ Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);
 Route::middleware(['admin'])->group(function() {
   Route::get('/>>>admin-data<<<', [AdminController::class, 'getData']);
   Route::patch('/>>>update-order<<</{order}', [AdminController::class, 'updateOrder']);
-  Route::patch('/>>>update-product<<<', [ProductController::class, 'updateProduct']);
-  Route::delete('/>>>delete-product<<</{id}', [ProductController::class, 'deleteProduct']);
+  Route::patch('/>>>update-product<<</{product}', [ProductController::class, 'updateProduct']);
+  Route::delete('/>>>delete-product<<</{product}', [ProductController::class, 'deleteProduct']);
   Route::post('/>>>new-product<<<', [ProductController::class, 'createProduct']);
 });

@@ -5,10 +5,10 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async ({ currentPage, searchData }) => {
     if (currentPage.includes("search-products")) {
-      let postResponse = await axios.post(currentPage, searchData);
-      return postResponse.data.data;
+      const response = await axios.post(currentPage, searchData);
+      return response.data;
     } else {
-      let response = await axios.get(currentPage);
+      const response = await axios.get(currentPage);
       return response.data;
     }
   }

@@ -7,59 +7,70 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\NewProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Services\ProductService;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
-    public function index(Category $category)
+    public function index(Category $category, ProductService $productService)
     {   
         if(isset($category->id)) {
             $data = $category->products()->paginate(9);
             return response($data);
         }
+
+        $collection = $productService->productsOrderByCategories();
+
+        //macro:'paginate' make it possible to call paginate() on Illuminate\Support\Collection. 
+        // The macro is placed in AppServiceProvider
+        $data = $collection->paginate(9);
         
-        $data = Product::paginate(9);
         return response($data);
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $data = Product::where('title', 'LIKE', '%'.$request['search'].'%')
         ->orWhere('description', 'LIKE', '%'.$request['search'].'%')
         ->paginate(9);
         
-        return response(compact('data'));
+        return response($data);
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::with('images')->find($id);
-        
-        return response($product);
+        $data = $product;
+        $data['images'] = $product->images;
+
+        return response($data);
     }
 
-    public function updateProduct(ProductUpdateRequest $request) {
+    public function updateProduct(ProductUpdateRequest $request, Product $product, ProductService $productService)
+    {
+        try {
+            $validated = $request->validated();
+        } catch(ValidationException $e) {
+            return response($e->errors());
+        }
 
-        $validated = $request->validated();
-        $product = Product::find($validated['id']);
-        if(!$product)
-            return response(['message' => 'Product not find'], 404);
+        $message = $productService->updateProduct($validated, $product);
 
-        if($product['stock'] != $validated['stock'])
-            $product->update(['stock' => $validated['stock']]);
-
-        if($product['discountPercentage'] != $validated['discount'])
-            $product->update(['discountPercentage' => $validated['discount']]);
-
-        return response(['message' => 'Product updated successfully!']);
+        return response($message);
     }
 
-    public function deleteProduct($id) {
+    public function deleteProduct(Product $product)
+    {
+        $product->delete();
 
-        Product::find($id)->delete();
-        return response([]);
+        return response('Product deleted successfully!');
     }
 
-    public function createProduct(NewProductRequest $request) {
-        $validated = $request->validated();
+    public function createProduct(NewProductRequest $request, ProductService $productService) {
+        try {
+            $validated = $request->validated();
+        } catch(ValidationException $e) {
+            return response($e->errors());
+        }
 
         $files = $request->file();
         if(count($files) == 0) {
