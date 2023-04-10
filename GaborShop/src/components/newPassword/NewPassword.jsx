@@ -6,7 +6,7 @@ import { setMessage, setType } from "../Message/messageSlice";
 import { useDispatch } from "react-redux";
 import ShowInputError from "../Message/ShowInputError";
 
-export default function NewPassword({ closeModal, id }) {
+export default function NewPassword({ closeModal }) {
   const [data, setData] = useState({});
   const [inputError, setInputError] = useState({ errors: {} });
   const dispatch = useDispatch();
@@ -15,33 +15,34 @@ export default function NewPassword({ closeModal, id }) {
   const handleChange = (event) =>
     setData({ ...data, [event.target.name]: event.target.value });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    axios
-      .patch(
+
+    try {
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/password_update`,
-        { ...data, id },
+        { ...data },
         {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
-      )
-      .then((response) => {
+      );
+
+      if (response.status === 200) {
         closeModal();
-        dispatch(setMessage(response.data.message));
-      })
-      .catch((error) => {
-        if (error.response.data.errors) {
-          setInputError(error.response.data);
-        } else {
-          closeModal();
-          dispatch(setMessage(error.response.data.message));
-          dispatch(setType(error.response.data.type));
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        dispatch(setMessage(response.data));
+      }
+    } catch (e) {
+      if (e.response.data.errors) {
+        setInputError(e.response.data);
+      } else {
+        closeModal();
+        dispatch(setMessage(e.response.data.message));
+        dispatch(setType(e.response.data.type));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

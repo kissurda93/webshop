@@ -6,54 +6,53 @@ import Cookies from "js-cookie";
 import ShowInputError from "../Message/ShowInputError";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { setMessage, setType } from "../Message/messageSlice";
 
 export default function ProfileAddress() {
   const dispatch = useDispatch();
-  const [inputError, setInputError] = useState({ errors: {} });
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false);
-
-  const { name, id, email, email_verified_at } = useSelector(
+  const { name, email, email_verified_at } = useSelector(
     (state) => state.user.userInfo
   );
+  const [inputError, setInputError] = useState({ errors: {} });
+  const [data, setData] = useState({ name: name, email: email });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) =>
     setData({ ...data, [event.target.name]: event.target.value });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setInputError({ errors: {} });
+    if (data.name === name && data.email === email) return setLoading(false);
 
-    const dataToSubmit = { ...data };
-    if (dataToSubmit?.name === "") delete dataToSubmit.name;
-    if (dataToSubmit?.email === "") delete dataToSubmit.email;
-
-    axios
-      .patch(
+    try {
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/user_update`,
-        { ...dataToSubmit, id },
+        { ...data },
         {
           headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
         }
-      )
-      .then(() => {
-        if (dataToSubmit.name) dispatch(setName(dataToSubmit.name));
-        if (dataToSubmit.email) dispatch(setEmail(dataToSubmit.email));
-        setData({});
-        event.target.reset();
-      })
-      .catch((error) => {
-        if (error.response.data.errors) {
-          setInputError(error.response.data);
-        } else {
-          dispatch(setMessage(error.response.data.message));
-          dispatch(setType(error.response.data.type));
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      );
+
+      console.log(response);
+
+      if (response.status === 200) {
+        if (data.name !== name) dispatch(setName(data.name));
+        if (data.email !== email) dispatch(setEmail(data.email));
+
+        dispatch(setMessage(response.data));
+      }
+    } catch (e) {
+      if (e.response.data.errors) {
+        setInputError(e.response.data);
+      } else {
+        dispatch(setMessage(e.response.data.message));
+        dispatch(setType(e.response.data.type));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,7 +67,7 @@ export default function ProfileAddress() {
               type="text"
               name="name"
               id="name"
-              placeholder={name}
+              defaultValue={name}
               onChange={handleChange}
             />
             <ShowInputError status={inputError} inputName="name" />
@@ -81,7 +80,7 @@ export default function ProfileAddress() {
               type="text"
               name="email"
               id="email"
-              placeholder={email}
+              defaultValue={email}
               onChange={handleChange}
             />
             <ShowInputError status={inputError} inputName="email" />
@@ -89,9 +88,11 @@ export default function ProfileAddress() {
         </div>
 
         <div className="button-group">
-          <button type="submit" disabled={loading}>
-            {loading ? "..." : "Save"}
-          </button>
+          {!(data.name === name && data.email === email) && (
+            <button type="submit" disabled={loading}>
+              {loading ? "..." : "Save"}
+            </button>
+          )}
         </div>
       </form>
       {email_verified_at === null && (

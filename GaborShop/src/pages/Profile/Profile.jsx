@@ -83,7 +83,6 @@ export default function Profile() {
                   closeModal={() => {
                     setOpenModal(false);
                   }}
-                  id={id}
                 />
               )}
             </div>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\VerificationMail;
 use App\Http\Requests\LoginRequest;
@@ -15,10 +14,10 @@ use App\Http\Requests\PasswordUpdateRequest;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\ForgottenPasswordRequest;
 use App\Http\Requests\PasswordResetRequest;
-use Illuminate\Auth\Events\PasswordReset;
+use App\Services\UserService;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller
 {
@@ -32,46 +31,25 @@ class UserController extends Controller
         return response(compact('user', 'addresses', 'orders'));
     }
 
-    public function register(RegisterRequest $request): Response
+    public function register(RegisterRequest $request, UserService $userService): Response
     {
         try {
             $validated = $request->validated();
-        }
-        catch (ValidationException $e) {
+
+            list($user, $url) = $userService->createUser($validated);
+            $userService->loginUser($validated);
+        } catch (ValidationException $e) {
             return response($e->errors());
+        } catch (AuthenticationException $e) {
+            return response($e->getMessage(), 401);
         }
-
-        $userData = [
-            'email' => $validated['email'],
-            'name' => $validated['name'],
-            'password' => $validated['password'],
-            'verification_token' => Str::random(100)
-        ];
-
-        $addressData = [
-            'country' => $validated['country'],
-            'state' => isset($validated['state']) ? $validated['state'] : null,
-            'city' => isset($validated['city']) ? $validated['city'] : null,
-            'address' => $validated['address'],
-            'default' => true
-        ];
-
-
-        $user = User::create($userData);
-        $user->addresses()->create($addressData);
-        $url = route('account-activate', ['user' => $user->verification_token,]);
-
+        
         Mail::to($user->email)->send(new VerificationMail($url, $user));
-
-        if(!Auth::attempt($userData)) 
-            return response(['message' => 'Sign Up Failed!', 'type' => 'failed'], 422);
-
         
         $token = $request->user()->createToken('my_token')->plainTextToken;
-        return response(
-            ['message' => 'Verification Link Has Been Sent To Your Email Adress!',
-            'token' => $token,
-            ], 201);
+        $message = 'Verification Link Has Been Sent To Your Email Adress!';
+
+        return response(compact('token', 'message'), 201);
     }
 
     public function activate(User $user): RedirectResponse
@@ -110,7 +88,8 @@ class UserController extends Controller
         return response([]);
     }
 
-    public function update(UserUpdateRequest $request) {
+    public function update(UserUpdateRequest $request, UserService $userService): Response
+    {
         try {
             $validated = $request->validated();
         }
@@ -118,20 +97,14 @@ class UserController extends Controller
             return response($e->errors());
         }
         
-        $user = User::find($validated['id']);
+        $user = Auth::user();
 
         if(!$user)
-            return response(['message' => 'Update Failed!', 'type' => 'failed'], 422);
+            return response(['message' => 'Update Failed!', 'type' => 'failed'], 404);
 
-        if(isset($validated['name']) && $validated['name'] != "")
-            $user['name'] = $validated['name'];
-
-        if(isset($validated['email']) && $validated['email'] != "")
-            $user['email'] = $validated['email'];
-
-        $user->save();
-
-        return response([]);
+        $userService->updateUser($user, $validated);
+       
+        return response("Update was successful!");
     }
 
     public function destroy(User $user): Response
@@ -141,7 +114,8 @@ class UserController extends Controller
         return response("Account deleted!");
     }
 
-    public function updatePassword(PasswordUpdateRequest $request) {
+    public function updatePassword(PasswordUpdateRequest $request): Response
+    {
         try {
             $validated = $request->validated();
         }
@@ -149,28 +123,30 @@ class UserController extends Controller
             return response($e->errors());
         }
 
-        if(!User::find($validated['id'])->update(['password' => $validated['password']]))
-            return response(['message' => 'Update Failed!', 'type' => 'failed'], 422);
+        $user = auth()->user();
+
+        if(!$user)
+            return response(['message' => 'Update Failed!', 'type' => 'failed'], 404);
+
+        $user->update([
+            'password' => $validated['password'],
+        ]);
         
-        return response(['message' => 'Password Changed Successfully!']);
+        return response('Password Changed Successfully!');
     }
 
-    public function newPassword(ForgottenPasswordRequest $request) {
+    public function newPassword(ForgottenPasswordRequest $request, UserService  $userService): Response
+    {
         try {
-            $request->validated();
-        }
-        catch (ValidationException $e) {
+            $validated = $request->validated();
+            $userService->requestNewPassword($validated);
+        } catch(ValidationException $e) {
             return response($e->errors());
+        } catch(AuthenticationException $e) {
+            return response(['message' => $e->getMessage(), 'type' => 'failed'], 404);
         }
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if($status !== Password::RESET_LINK_SENT)
-            return response(['message' => 'Password Update Failed!', 'type' => 'failed'], 422);
-
-        return response(['message' => 'Link Has Been Sent To Your Email Address!']);
+ 
+        return response('Link Has Been Sent To Your Email Address!');
     }
 
     public function toNewPasswordForm($token): RedirectResponse
@@ -178,29 +154,16 @@ class UserController extends Controller
         return redirect()->away(env("APP_FRONTEND_URL")."/reset-password/".$token);
     }
 
-    public function setNewPassword(PasswordResetRequest $request) {
+    public function setNewPassword(PasswordResetRequest $request, UserService $userService): Response
+    {
         try {
-            $request->validated();
-        }
-        catch (ValidationException $e) {
+            $validated = $request->validated();
+            $userService->setNewPassword($validated);
+        } catch(ValidationException $e) {
             return response($e->errors());
+        } catch(AuthenticationException $e) {
+            return response(['message' => $e->getMessage(), 'type' => 'failed'], 404);
         }
-
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                'password' => $password
-            ]);
- 
-            $user->save();
-
-            event(new PasswordReset($user));
-            }
-        );
-
-        if($status !== Password::PASSWORD_RESET)
-            return response(['message' => 'Password Update Failed!', 'type' => 'failed'], 422);
 
         return response(['message' => 'Password Updated Successfully!']);
     }
