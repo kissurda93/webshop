@@ -107,8 +107,9 @@ class UserController extends Controller
         return response("Update was successful!");
     }
 
-    public function destroy(User $user): Response
+    public function destroy(): Response
     {
+        $user = auth()->user();
         $user->delete();
 
         return response("Account deleted!");

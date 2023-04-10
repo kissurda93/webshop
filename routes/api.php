@@ -47,7 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::get('/user', [UserController::class, 'getUserData']);
   Route::get('/logout', [UserController::class, 'logout']);
   Route::patch('/user_update', [UserController::class, 'update']);
-  Route::delete('/user_delete/{id}', [UserController::class, 'destroy']);
+  Route::delete('/user_delete', [UserController::class, 'destroy']);
   Route::patch('/password_update', [UserController::class, 'updatePassword']);
   Route::post('/new-address/{user}', [AddressController::class, 'newAddress']);
   Route::patch('/setDefaultAddress/{user}/{address}', [AddressController::class, 'setDefault']);

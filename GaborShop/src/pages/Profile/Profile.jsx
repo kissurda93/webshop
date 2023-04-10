@@ -77,7 +77,7 @@ export default function Profile() {
               <button onClick={() => setOpenModal(true)}>
                 Change Password
               </button>
-              <DeleteAccountBtn id={id} />
+              <DeleteAccountBtn />
               {openModal && (
                 <NewPassword
                   closeModal={() => {

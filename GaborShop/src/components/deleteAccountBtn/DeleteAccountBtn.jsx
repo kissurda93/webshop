@@ -5,26 +5,30 @@ import { setMessage, setType } from "../Message/messageSlice";
 import { resetUser } from "../../layouts/UserLayout/userSlice";
 import Cookies from "js-cookie";
 
-export default function DeleteAccountBtn({ id }) {
+export default function DeleteAccountBtn() {
   const navTo = useNavigate();
   const dispatch = useDispatch();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are You Sure You Want To Delete Your Account?")) {
-      axios
-        .delete(`${import.meta.env.VITE_API_URL}/user_delete/${id}`, {
-          headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
-        })
-        .then((response) => {
+      try {
+        const response = await axios.delete(
+          `${import.meta.env.VITE_API_URL}/user_delete`,
+          {
+            headers: { Authorization: `Bearer ${Cookies.get("user_token")}` },
+          }
+        );
+
+        if (response.status === 200) {
           Cookies.remove("user_token");
           dispatch(resetUser());
           navTo("/signup");
           dispatch(setMessage("Account Deleted!"));
-        })
-        .catch((error) => {
-          dispatch(setMessage(error.response.data.message));
-          dispatch(setType(error.response.data.type));
-        });
+        }
+      } catch (e) {
+        dispatch(setMessage(e.response.data.message));
+        dispatch(setType(e.response.data.type));
+      }
     }
   };
 
