@@ -18,7 +18,7 @@ export default function LandingPage() {
           <span className="exclamation-icon">
             <FontAwesomeIcon icon={faExclamationCircle} />
           </span>
-          This is a demo website!
+          This is a demo e-commerce website!
         </p>
         <p>
           <span className="exclamation-icon">
@@ -38,7 +38,7 @@ export default function LandingPage() {
           <span className="exclamation-icon">
             <FontAwesomeIcon icon={faExclamationCircle} />
           </span>
-          This demo is for practice purposes.
+          This demo was created for learning purposes.
         </p>
       </section>
       <section className="landing-button-container">

@@ -19,11 +19,16 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function() {
             Artisan::call('queue:work --stop-when-empty');
-        })->everyMinute();
+        })->everyMinute()->name('QueueWorker')->withoutOverlapping();
 
-        $schedule->call(function() {
-            User::withTrashed()->find(6)->restore();
-        })->everyFiveMinutes();
+        // $schedule->call(function() {
+        //     $user = User::withTrashed()->find(6);
+        //     $user->restore();
+        //     $user->name = "Teszt Elek";
+        //     $user->email = "test@email.com";
+        //     $user->password = "testuser";
+        //     $user->save();
+        // })->everyFiveMinutes()->name('Test account fixer')->withoutOverlapping();
     }
 
     /**
