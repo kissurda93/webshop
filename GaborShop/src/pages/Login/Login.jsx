@@ -95,12 +95,12 @@ export default function Login() {
           --------------------------------------------------------------------------------
           <br></br>
           Every migrated users password is "testuser"<br></br>
-          {/* --------------------------------------------------------------------------------
+          --------------------------------------------------------------------------------
           <br></br>
           If you cant logging in with the test account credentials,<br></br>{" "}
           then somebody modified or deleted the account.<br></br>Every 5 minutes
           the account will return to its original state.<br></br>Please try
-          again later! */}
+          again later!
         </p>
       </section>
       {openModal && (
