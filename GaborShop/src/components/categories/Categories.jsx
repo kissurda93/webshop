@@ -39,7 +39,7 @@ export default function Categories() {
   return (
     <ul className="categories">
       {loading ? (
-        <Spinner />
+        <></>
       ) : (
         categories.map((category) => {
           return (

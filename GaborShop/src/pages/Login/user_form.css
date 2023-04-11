@@ -56,6 +56,13 @@
   text-decoration: underline;
 }
 
+.credentials {
+  background-color: var(--light-green);
+  color: green;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
 @media (max-width: 650px) {
   .user-form-section > h2 {
     font-size: 1.8rem;

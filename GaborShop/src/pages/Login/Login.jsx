@@ -81,12 +81,25 @@ export default function Login() {
           </button>
         </form>
         <p>
-          Or <Link to={"/signup"}>create a new account</Link> if you don't have
-          one!
+          Or <Link to={"/signup"}>create a new account</Link> if you want to
+          test the sign up process!
         </p>
         <p>
           Did you forget your password?{" "}
           <Link onClick={() => setOpenModal(true)}>Click Here!</Link>
+        </p>
+        <p className="credentials">
+          Test user account credentials:<br></br> Email: test@email.com |
+          Password: testuser
+          <br></br>
+          --------------------------------------------------------------------------------
+          <br></br>
+          Every migrated users password is "testuser"<br></br>
+          --------------------------------------------------------------------------------
+          <br></br>
+          If you cant logging in with the test account credentials,<br></br>{" "}
+          then somebody deleted the account.<br></br> 5 minutes later the
+          account will be restored
         </p>
       </section>
       {openModal && (

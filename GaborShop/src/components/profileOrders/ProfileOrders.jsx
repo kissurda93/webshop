@@ -25,9 +25,7 @@ export default function ProfileOrders() {
                         : faCircleExclamation
                     }
                     color={
-                      order.payment_status === "Successfull"
-                        ? "green"
-                        : "var(--tomato)"
+                      order.payment_status === "Successfull" ? "green" : "red"
                     }
                   />
                 </p>
@@ -40,9 +38,7 @@ export default function ProfileOrders() {
                         : faCircleExclamation
                     }
                     color={
-                      order.delivery_status === "Completed"
-                        ? "green"
-                        : "var(--tomato)"
+                      order.delivery_status === "Completed" ? "green" : "red"
                     }
                   />
                 </p>

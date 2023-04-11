@@ -63,6 +63,14 @@ export default function AdminLogin() {
         <button type="submit" disabled={loading}>
           {loading ? "..." : "Sign In"}
         </button>
+        <p className="credentials">
+          Test admin account credentials:<br></br> Email: test@email.com |
+          Password: testadmin
+          <br></br>
+          --------------------------------------------------------------------------------
+          <br></br>
+          Every migrated admins password is "testadmin"<br></br>
+        </p>
       </form>
     </main>
   );

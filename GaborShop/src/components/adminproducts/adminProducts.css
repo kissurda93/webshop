@@ -91,9 +91,9 @@
 .admin-form {
   display: flex;
   flex-direction: column;
-  background-color: var(--dark-grey);
-  color: var(--tomato);
-  padding: 1rem;
+  background-color: var(--dark-purple);
+  color: var(--green);
+  padding: 2rem;
   border-radius: 4px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
@@ -122,8 +122,8 @@
   border: none;
   border-radius: 4px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  background-color: var(--tomato);
-  color: var(--light-grey);
+  background-color: var(--light-purple);
+  color: var(--dark-purple);
 }
 
 @media (max-width: 650px) {

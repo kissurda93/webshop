@@ -13,9 +13,12 @@ export default function AdminUsers() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+
     const userFromRedux = users.find((user) => user.email == userEmail);
-    setUser(userFromRedux);
-    setShowUser(true);
+    if (userFromRedux) {
+      setUser(userFromRedux);
+      setShowUser(true);
+    }
   };
 
   const handleChange = (e) => {

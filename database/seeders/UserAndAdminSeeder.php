@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Admin;
 
+
 class UserAndAdminSeeder extends Seeder
 {
     /**
@@ -19,5 +20,9 @@ class UserAndAdminSeeder extends Seeder
     {
         Admin::factory(2)->create();
         User::factory(5)->has(Address::factory(1))->create();
+        
+        $this->call([
+            TestUserAdminSeeder::class,
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Artisan;
@@ -16,9 +17,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
+        $schedule->call(function() {
             Artisan::call('queue:work --stop-when-empty');
         })->everyMinute();
+
+        $schedule->call(function() {
+            User::withTrashed()->find(6)->restore();
+        })->everyFiveMinutes();
     }
 
     /**

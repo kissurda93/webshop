@@ -22,8 +22,10 @@ export default function AdminOrders() {
   const handleSearch = (e) => {
     e.preventDefault();
     const foundedOrder = orders.find((order) => order.order_ref == orderRef);
-    setOrder(foundedOrder);
-    setShowOrder(true);
+    if (foundedOrder) {
+      setOrder(foundedOrder);
+      setShowOrder(true);
+    }
   };
 
   const handleClickOnOrder = (e) => {
@@ -63,10 +65,7 @@ export default function AdminOrders() {
               >
                 {order.user_data.name} {order.order_ref}{" "}
                 {order.delivery_status != "Completed" ? (
-                  <FontAwesomeIcon
-                    icon={faCircleExclamation}
-                    color="var(--tomato)"
-                  />
+                  <FontAwesomeIcon icon={faCircleExclamation} color="red" />
                 ) : (
                   <FontAwesomeIcon icon={faCircleCheck} color="green" />
                 )}

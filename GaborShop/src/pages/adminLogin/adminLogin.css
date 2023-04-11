@@ -2,14 +2,14 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-block: 10rem;
+  margin-block: 6rem;
   margin-inline: auto;
-  background-color: var(--dark-grey);
+  background-color: var(--dark-purple);
   padding: 1rem;
   max-width: 600px;
   border-radius: 4px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
-  color: var(--tomato);
+  color: var(--green);
   font-size: 1.2rem;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .admin-login-form input:focus {
-  outline: 3px solid var(--tomato);
+  outline: 3px solid var(--green);
 }
 
 .admin-login-form > button {
@@ -33,12 +33,12 @@
   padding: 0.4rem 1rem;
   border: none;
   border-radius: 4px;
-  background-color: var(--tomato);
-  color: var(--light-grey);
+  background-color: var(--light-purple);
+  color: var(--dark-purple);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
 }
 
 .admin-login-form > button:hover {
-  background-color: var(--yellow);
-  color: var(--dark-grey);
+  background-color: var(--green);
 }
