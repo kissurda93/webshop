@@ -42,4 +42,21 @@ class SimplePayController extends Controller
 
         $simplePayService->changeProductQuantities($order);
     }
+
+    public function withoutSimplePay(PaymentRequest $request, User $user, SimplePayService $simplePayService)
+    {
+        try {
+            $validated = $request->validated();
+
+            $simplePayService
+            ->collectData($user, $validated)
+            ->storeOrderWithoutSimplePay();
+            
+            return response("Payment successfull!");
+        } catch(ValidationException $e) {
+            return response($e->errors());
+        } catch(PaymentException $e) {
+            return response($e->getMessage(), $e->getCode());
+        }
+    }
 }

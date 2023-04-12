@@ -8,6 +8,9 @@ import SimplePayLogo from "../../assets/logo/simplepay.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../../components/spinners/Spinner";
+import { clear } from "../../indexedDB/indexedDB";
+import indexed_db from "../../indexedDB/indexedDB";
+import { clearCart } from "./cartProductsSlice";
 
 export default function BuyProducts() {
   const navTo = useNavigate();
@@ -56,7 +59,10 @@ export default function BuyProducts() {
       );
 
       if (response.status === 200) {
-        window.location = response.data;
+        const db = await indexed_db();
+        await clear(db);
+        dispatch(clearCart());
+        dispatch(setMessage(response.data));
       }
     } catch (error) {
       console.warn(error);
