@@ -92,10 +92,7 @@ export default function Login() {
           Test user account credentials:<br></br> Email: test@email.com |
           Password: testuser
           <br></br>
-          --------------------------------------------------------------------------------
-          <br></br>
-          Every migrated users password is "testuser"<br></br>
-          --------------------------------------------------------------------------------
+          <hr></hr>
           <br></br>
           If you cant logging in with the test account credentials,<br></br>{" "}
           then somebody modified or deleted the account.<br></br>Every 5 minutes
