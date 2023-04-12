@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\SimplePayController;
 use App\Models\Order;
 
@@ -55,9 +56,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::post('/simplePay-request/{user}', [SimplePayController::class, 'start']);
 });
 
-// IPN receiver endpoint to SimplePay:
-Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
-
 // Admin related:
 Route::post('/>>>login-admin<<<', [AdminController::class, 'login']);
 Route::middleware(['admin'])->group(function() {
@@ -67,3 +65,10 @@ Route::middleware(['admin'])->group(function() {
   Route::delete('/>>>delete-product<<</{product}', [ProductController::class, 'deleteProduct']);
   Route::post('/>>>new-product<<<', [ProductController::class, 'createProduct']);
 });
+
+// IPN receiver endpoint to SimplePay:
+Route::post('/ipn-receiver', [SimplePayController::class, 'ipn']);
+
+// CRON related
+Route::get('/sendEmails', [CronController::class, 'sendingEmails']);
+Route::get('/fixTestAccount', [CronController::class, 'fixTestAccount']);
