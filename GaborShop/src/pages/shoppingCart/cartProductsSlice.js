@@ -64,6 +64,11 @@ export const cartProductsSlice = createSlice({
       state.quantity = newTotalQuantity;
       state.totalPrice = newTotalPrice;
     },
+    clearCart: (state) => {
+      state.productsInCart = initialState.productsInCart;
+      state.quantity = initialState.quantity;
+      state.totalPrice = initialState.totalPrice;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,6 +95,7 @@ export const {
   changeProductQuantity,
   changeTotals,
   changeProductSubTotal,
+  clearCart,
 } = cartProductsSlice.actions;
 
 export default cartProductsSlice.reducer;

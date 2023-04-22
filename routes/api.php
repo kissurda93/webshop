@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\User;
-use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
@@ -11,7 +8,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\SimplePayController;
-use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +49,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
   Route::post('/new-address/{user}', [AddressController::class, 'newAddress']);
   Route::patch('/setDefaultAddress/{user}/{address}', [AddressController::class, 'setDefault']);
   Route::delete('/delete-address/{address}', [AddressController::class, 'deleteAddress']);
-  Route::post('/simplePay-request/{user}', [SimplePayController::class, 'start']);
+  Route::post('/simplePay-request/{user}', [SimplePayController::class, 'withoutSimplePay']);
 });
 
 // Admin related:
