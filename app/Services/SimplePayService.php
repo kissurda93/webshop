@@ -210,6 +210,27 @@ class SimplePayService
     return $this;
   }
 
+  public function storeOrderWithoutSimplePay()
+  {
+    $orderRef = str_replace(array('.', ':', '/'), "", @$_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
+
+    $order = $this->user->orders()->create([
+      'user_data' => json_encode($this->user),
+      'products_data' => json_encode($this->dataToTrx['products']),
+      'total_price' => $this->dataToTrx['totalPrice'],
+      'invoice_address' => json_encode($this->dataToTrx['invoiceAddress']),
+      'delivery_address' => json_encode($this->dataToTrx['deliveryAddress']),
+      'payment_status' => 'Successful',
+      'delivery_status' => 'Started',
+      'order_ref' => $orderRef,
+    ]);
+
+    $this->changeProductQuantities($order);
+
+    return $this;
+  }
+
+
   public function convert(CurrencyConverter $converter): object
   {
     list($products, $totalPrice) = $converter->convert($this->dataToTrx['products'], $this->dataToTrx['totalPrice']);
@@ -224,7 +245,7 @@ class SimplePayService
   {
     $order = Order::where('order_ref', $orderRef)->first();
     $order->update([
-        'payment_status' => 'Successfull',
+        'payment_status' => 'Successful',
         'delivery_status' => 'Started',
         'ipn_status' => true,
         'ipn_response' => $input_json,
@@ -243,26 +264,6 @@ class SimplePayService
         $stock = $productInDb['stock'];
         $productInDb->update(['stock' => $stock - $product->quantity]);
     }
-  }
-
-  public function storeOrderWithoutSimplePay()
-  {
-    $orderRef = str_replace(array('.', ':', '/'), "", @$_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
-
-    $order = $this->user->orders()->create([
-      'user_data' => json_encode($this->user),
-      'products_data' => json_encode($this->dataToTrx['products']),
-      'total_price' => $this->dataToTrx['totalPrice'],
-      'invoice_address' => json_encode($this->dataToTrx['invoiceAddress']),
-      'delivery_address' => json_encode($this->dataToTrx['deliveryAddress']),
-      'payment_status' => 'Completed',
-      'delivery_status' => 'Started',
-      'order_ref' => $orderRef,
-    ]);
-
-    $this->changeProductQuantities($order);
-
-    return $this;
   }
 
   private function validateAddress (Address $address): Address

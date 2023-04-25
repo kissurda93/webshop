@@ -20,12 +20,12 @@ export default function ProfileOrders() {
                   Payment Status: {order.payment_status}{" "}
                   <FontAwesomeIcon
                     icon={
-                      order.payment_status === "Successfull"
+                      order.payment_status === "Successful"
                         ? faCircleCheck
                         : faCircleExclamation
                     }
                     color={
-                      order.payment_status === "Successfull" ? "green" : "red"
+                      order.payment_status === "Successful" ? "green" : "red"
                     }
                   />
                 </p>
