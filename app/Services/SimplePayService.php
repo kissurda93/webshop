@@ -220,7 +220,7 @@ class SimplePayService
       'total_price' => $this->dataToTrx['totalPrice'],
       'invoice_address' => json_encode($this->dataToTrx['invoiceAddress']),
       'delivery_address' => json_encode($this->dataToTrx['deliveryAddress']),
-      'payment_status' => 'Completed',
+      'payment_status' => 'Successful',
       'delivery_status' => 'Started',
       'order_ref' => $orderRef,
     ]);
@@ -245,7 +245,7 @@ class SimplePayService
   {
     $order = Order::where('order_ref', $orderRef)->first();
     $order->update([
-        'payment_status' => 'Successfull',
+        'payment_status' => 'Successful',
         'delivery_status' => 'Started',
         'ipn_status' => true,
         'ipn_response' => $input_json,
