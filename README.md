@@ -52,9 +52,9 @@ MAIL_FROM_ADDRESS="gaborshop@gmail.com"
 
 `php artisan serve`
 
-7. Start the backend schedule worker:
+7. Start the backend queue worker:
 
-`php artisan schedule:work`
+`php artisan queue:work`
 
 8. Install the front-end dependencies:
 

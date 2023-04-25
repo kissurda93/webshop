@@ -67,9 +67,6 @@ export default function AdminLogin() {
           Test admin account credentials:<br></br> Email: test@email.com |
           Password: testadmin
           <br></br>
-          --------------------------------------------------------------------------------
-          <br></br>
-          Every migrated admins password is "testadmin"<br></br>
         </p>
       </form>
     </main>

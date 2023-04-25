@@ -17,9 +17,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function() {
-            Artisan::call('queue:work --stop-when-empty');
-        })->everyMinute()->name('QueueWorker')->withoutOverlapping();
     }
 
     /**
