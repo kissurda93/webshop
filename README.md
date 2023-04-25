@@ -1,6 +1,6 @@
 # GaborShop
 
-A fictitious webshop. Which was made for learning purposes only. Powered by Laravel, React and MySQL stack. The project includes a SimplePay implementation, but this local version does not use it, as it would require simplepay account credentials. The [live demo](https://gaborshop.hu) uses the simplepay implementation to operate the payment. I hope that installing and using the project will not cause any difficulties. Feel free to sending a pullrequest or to open an issue!
+A fictitious webshop. Which was made for learning purposes only. Powered by Laravel, React and MySQL stack. The project includes a SimplePay implementation, which is not in use. The SimplePay account is owned by my mentor, who provided the opportunity for implementing and testing during the learning period. He is currently using the account to teach others, so I cannot release it into a [live environment](https://gaborshop.hu). If you are interested, you can view the implementation in the app/Services/SimpleyPayService.php file. I hope that installing and using the project will not cause any difficulties. Feel free to sending a pullrequest or to open an issue!
 
 ## Prerequisites
 
